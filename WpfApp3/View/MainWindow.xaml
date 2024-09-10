@@ -1,0 +1,207 @@
+﻿<Window x:Class="SFC.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SFC" xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
+        mc:Ignorable="d"
+        xmlns:viewModel="clr-namespace:SFC.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        Title="Snowflake CAN v0.1" Height="620" Width="820">
+    <Window.DataContext>
+        <viewModel:MainWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <SolidColorBrush x:Key="brushWatermarkBackground" Color="White" />
+        <SolidColorBrush x:Key="brushWatermarkForeground" Color="LightSteelBlue" />
+        <SolidColorBrush x:Key="brushWatermarkBorder" Color="Indigo" />
+
+        <FontFamily x:Key="CustomFont">Times New Roman</FontFamily>
+    </Window.Resources>
+    <Grid x:Name ="layoutGrid">
+        <TabControl SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Header="Настройка">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="400"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="120"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox Name="listCOM" ItemsSource="{Binding PortList}"  Margin="15,15,15,15" SelectedItem="{Binding PortName}" SelectedIndex="0" IsEnabled="{Binding ChangePortEnable}" >
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="DropDownOpened">
+                                            <i:InvokeCommandAction Command="{Binding RefreshPortsCommand}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                                <Button x:Name="buttonCOM" Padding="2" Content="{Binding Path=ButPortContent}" Command="{Binding OpenPortCommand}" Grid.Column="1"   Margin="15,15,15,15" IsEnabled="{Binding EnableAction}" />
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox Name="BaudrateList" ItemsSource="{Binding BaudrateList}" Margin="15,15,15,15">
+                                </ComboBox>
+                                <Button Name="buttonBaudrate"  Grid.Column="1" Content="Задать" Command="{Binding SetBaudrate}" Margin="15,15,15,15"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Управление">
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="300"/>
+                            <RowDefinition Height="190"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <Border BorderBrush="Gray" BorderThickness="1" Margin="1,1,1,1">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="28"/>
+                                        <RowDefinition Height="29"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="160"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="120"/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox Content="Регулярн. отправка HTR" HorizontalAlignment="Left"  VerticalAlignment="Center"/>
+                                    <CheckBox Content="Запрос UDS" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center"/>
+                                    <Label  Grid.Column="1" Content="Режим работы:" HorizontalAlignment="Center"></Label>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding WorkModeList}" Grid.Row="1" Margin="5,5,5,5"/>
+                                    <Label  Grid.Column="2" Content="Уставка тем-ры:" HorizontalAlignment="Center"></Label>
+                                    <TextBox TextWrapping="Wrap" Text="85" Grid.Column="2" Grid.Row="1" Margin="5,5,5,5"/>
+                                    <Label  Grid.Column="3" Content="Время работы:" HorizontalAlignment="Center"></Label>
+                                    <TextBox TextWrapping="Wrap" Text="10" Grid.Column="3" Grid.Row="1" Margin="5,5,5,5"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <GroupBox Header="HTR J1939">
+                                    <DataGrid  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="LightGray" AlternatingRowBackground="White" HorizontalAlignment="Center">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Параметр" Width="190"></DataGridTextColumn>
+                                            <DataGridTextColumn Header="Значение" Width="190"></DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                        <DataGrid.Items></DataGrid.Items>
+                                    </DataGrid>
+                                </GroupBox>
+                                
+                                <GroupBox Header="UDS" Grid.Column="1">
+                                    <DataGrid  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="LightGray" AlternatingRowBackground="White" HorizontalAlignment="Center">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Параметр" Width="190"></DataGridTextColumn>
+                                            <DataGridTextColumn Header="Значение" Width="190"></DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                        <DataGrid.Items></DataGrid.Items>
+                                    </DataGrid>
+                                </GroupBox>
+
+
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2">
+                            <Grid>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Grid.Row="3">
+                            <Grid>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Grid.Row="4">
+                            <Grid>
+
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Терминал">
+            </TabItem>
+            <TabItem Header="Загрузчик">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="77*"/>
+                            <ColumnDefinition Width="27*"/>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="696*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="410"/>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Grid.ColumnSpan="4">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="179"/>
+                                    <ColumnDefinition Width="21"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button x:Name="buttonFile" Padding="2" Content="Файл" Command="{Binding ReadFileCommand}" Grid.Column="0" Margin="15,0,15,0" IsEnabled="{Binding EnableAction}" Grid.ColumnSpan="2" />
+                                <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="1" Margin="15,15,15,15">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <TextBlock Name="textFilePath" Text="{Binding FilePath}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                        <Button x:Name="buttonLoad" Padding="2" Content="{Binding LoadFirmwareContent}" Command="{Binding LoadFirmwareCommand}" Grid.Row="1" Grid.Column="0" Margin="15,14,15,14" IsEnabled="{Binding EnableAction}" Grid.ColumnSpan="4"/>
+                        <Border Grid.Row="2" Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Margin="5,5,5,5" Grid.ColumnSpan="4">
+                            <TextBlock Name="textConsole" Text="{Binding ConsoleContent}" Margin="15,0,15,0"></TextBlock>
+                        </Border>
+                        <ProgressBar  Grid.Row="3" Grid.Column="0" Value="{Binding LoadProgress}" Height="10" Margin="15,5,15,5" Grid.ColumnSpan="4"></ProgressBar>
+                        <StackPanel Grid.Row="4" Grid.ColumnSpan="4">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="Время загрузки:" VerticalAlignment="Center" Margin="25,0,0,0"></Label>
+                                <Label Content="{Binding LoadTimeS}" VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Column="0" Margin="142,0,0,0"/>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

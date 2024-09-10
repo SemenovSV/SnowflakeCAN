@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>UDSloader</RootNamespace>
+    <AssemblyName>UDSloader</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <ApplicationIcon>UDSloader.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CoreCLR-NCalc" Version="2.2.113" />
+	<PackageReference Include="LiveCharts.Wpf.NetCore3" Version="0.9.8" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+	<PackageReference Include="System.IO.Ports" Version="7.0.0" />
+	<Compile Remove="Models\Parameters.cs" />
+	<Compile Remove="Models\Protocol1.cs" />
+    <Compile Remove="Models\_ComPortModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UDSloader.ico" />
+  </ItemGroup>
+</Project>
