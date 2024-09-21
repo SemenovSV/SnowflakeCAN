@@ -14,7 +14,6 @@ namespace SFC.Models
     {
         public ComPortModel Port = new ComPortModel();
 
-
         public byte[] MessageIn = new byte[MessageMaxLength];
         public byte[] MessageOut = new byte[11];
 
@@ -105,6 +104,20 @@ namespace SFC.Models
 
         }
         public void SendApiBaudrate(uint _baudrate) => Port.ComPort.Write("S"+Convert.ToString(_baudrate)+"\r");
+
+        public void SetBaudrate(uint _baudrate)
+        {
+            if (Port.ComPort.IsOpen)
+            {
+                SendApiClose();
+                Thread.Sleep(10);
+                SendApiBaudrate(_baudrate);
+                Thread.Sleep(10);
+                Port.ComPort.BaudRate = (int)_baudrate;
+                Thread.Sleep(10);
+                SendApiOpen();
+            }
+        }
 
         public bool TransmissionSuccessed()
         {

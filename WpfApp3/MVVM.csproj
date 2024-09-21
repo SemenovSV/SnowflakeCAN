@@ -2,12 +2,12 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>UDSLoader</RootNamespace>
-    <AssemblyName>UDSloader</AssemblyName>
+    <RootNamespace>SFC</RootNamespace>
+    <AssemblyName>SFC</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <ApplicationIcon>UDSloader.ico</ApplicationIcon>
+    <ApplicationIcon>snowflake.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
@@ -24,6 +24,6 @@
     <Compile Remove="Models\_ComPortModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UDSloader.ico" />
+    <Content Include="snowflake.ico" />
   </ItemGroup>
 </Project>

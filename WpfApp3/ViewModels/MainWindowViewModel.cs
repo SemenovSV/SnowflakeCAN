@@ -20,13 +20,16 @@ using System.Windows.Data;
 using System.Windows.Controls;
 using System.IO.Packaging;
 using System.Xml.Linq;
+using System.Collections.ObjectModel;
+using static SFC.ViewModels.MainWindowViewModel;
 
 namespace SFC.ViewModels
 {
     public class MainWindowViewModel : ViewModel, IDisposable
     {
 
-        public ProtocolUDS Protocol;
+        public ProtocolUDS UDS;
+        public J1939_GAZ Protocol;
         #region Font
         private ushort _TxtFontSize = 18;
         public ushort TxtFontSize
@@ -43,6 +46,25 @@ namespace SFC.ViewModels
         private bool _CommunicationEnable = false;
         public bool CommunicationEnable
         { set => Set(ref _CommunicationEnable, value); get => _CommunicationEnable; }
+
+        private List<int> _BaudrateList = new List<int>() {20000, 50000, 100000, 125000, 250000, 500000, 800000, 1000000};
+        public List<int> BaudrateList
+        { set => Set(ref _BaudrateList, value); get => _BaudrateList; }
+
+        private int _BaudrateIndex = 5;
+        public int BaudrateIndex
+        { set => Set(ref _BaudrateIndex, value); get => _BaudrateIndex; }
+
+        public ICommand SetBaudrateCommand { get; }
+        private void OnSetBaudrateCommandExecuted(object parameter)
+        {
+            Protocol.Adapter.SetBaudrate((uint)BaudrateList[BaudrateIndex]);
+        }
+
+        private bool CanSetBaudrateCommandExecute(object parameter)
+        {
+            return true;
+        }
 
         private List<string> _PortList = SerialPort.GetPortNames().ToList();
         public List<string> PortList
@@ -75,7 +97,7 @@ namespace SFC.ViewModels
                     Protocol.Adapter.Port.ComPort.Open();
                     Protocol.Adapter.Connect();
 
-
+                    Protocol.StartProcessReq();
                 }
                 Thread.Sleep(500);
 
@@ -120,6 +142,9 @@ namespace SFC.ViewModels
         {
             Protocol.Adapter.Port.Recieve();
             Protocol.Adapter.ReadBuffer();
+
+
+
             Protocol.ParseMessage();
         }
         #endregion
@@ -141,13 +166,13 @@ namespace SFC.ViewModels
 
             if (FilePath != null && FilePath.Length > 0)
             {
-                Protocol.Hex.LoadHexFile(FilePath);
-                Protocol.Hex.insertCRC16(false);
+                UDS.Hex.LoadHexFile(FilePath);
+                UDS.Hex.insertCRC16(false);
                 ConsoleContent += "Версия выбранной прошивки: ";
-                ConsoleContent += Protocol.Hex.Version[0] + "." + Protocol.Hex.Version[1] + "." + Protocol.Hex.Version[2] + "." + Protocol.Hex.Version[3] + "\r";
+                ConsoleContent += UDS.Hex.Version[0] + "." + UDS.Hex.Version[1] + "." + UDS.Hex.Version[2] + "." + UDS.Hex.Version[3] + "\r";
                 ConsoleContent += "Дата создания: ";
-                ConsoleContent += Protocol.Hex.Date[0] + "." + Protocol.Hex.Date[1] + ".20" + Protocol.Hex.Date[2]+"\r";
-                Protocol.SetReceiverId(Protocol.Hex.Version);
+                ConsoleContent += UDS.Hex.Date[0] + "." + UDS.Hex.Date[1] + ".20" + UDS.Hex.Date[2]+"\r";
+                UDS.SetReceiverId(UDS.Hex.Version);
             }
         }
 
@@ -178,11 +203,11 @@ namespace SFC.ViewModels
         {
             ConsoleContent = "";
             ConsoleContent += "Версия выбранной прошивки: ";
-            ConsoleContent += Protocol.Hex.Version[0] + "." + Protocol.Hex.Version[1] + "." + Protocol.Hex.Version[2] + "." + Protocol.Hex.Version[3] + "\r";
+            ConsoleContent += UDS.Hex.Version[0] + "." + UDS.Hex.Version[1] + "." + UDS.Hex.Version[2] + "." + UDS.Hex.Version[3] + "\r";
             ConsoleContent += "Дата создания: ";
-            ConsoleContent += Protocol.Hex.Date[0] + "." + Protocol.Hex.Date[1] + ".20" + Protocol.Hex.Date[2]+ "\r";
+            ConsoleContent += UDS.Hex.Date[0] + "." + UDS.Hex.Date[1] + ".20" + UDS.Hex.Date[2]+ "\r";
             EnableAction = false;
-            Protocol.StartPricessLoading();
+            UDS.StartPricessLoading();
         }
 
         private bool CanLoadFirmwareCommandExecute(object parameter) => true;
@@ -251,18 +276,93 @@ namespace SFC.ViewModels
         }
         #endregion
 
+        #region Control
+        private bool _RegularReqHTR =true;
+        public bool RegularReqHTR
+        { set => Set(ref _RegularReqHTR, value); get => _RegularReqHTR; }
+
+        private bool _RegularReqUDS = false;
+        public bool RegularReqUD
+        { set => Set(ref _RegularReqUDS, value); get => _RegularReqUDS; }
+
+        private List<string> _WorkModeList = new List<string>()
+        {
+            "(0)Выключен", "(2)Экономичный", "(3)Подогрев", "(4)Помпа", "(10)Догреватель", "(11)Дополнителный"
+        };
+        public List<string> WorkModeList
+        { set => Set(ref _WorkModeList, value); get => _WorkModeList; }
+
+        private int _ModeIndex = 0;
+        public int ModeIndex
+        { set => Set(ref _ModeIndex, value); get => _ModeIndex; }
+
+        private int _WorkMode = 0;
+        public int WorkMode
+        { set => Set(ref _WorkMode, value); get => ConvertIndexToMode(ModeIndex); }
+
+        private int ConvertIndexToMode(int ind)
+        {
+            switch (ind)
+            {
+                case 1: return 2;
+                case 2: return 3;
+                case 3: return 4;
+                case 4: return 10;
+                case 5: return 11;
+            }
+            return 0;
+        }
+        private int _Tsetpoint = 85;
+        public int Tsetpoint
+        { set => Set(ref _Tsetpoint, value); get => _Tsetpoint; }
+
+        private int _WorkTime = 10;
+        public int WorkTime
+        { set => Set(ref _WorkTime, value); get => _WorkTime; }
+
+        #endregion
+
+        #region J1939_Grid
+
+        public class CalculatedParams  //посчитанные параметры для отображения в таблице терминала и построения графиков
+        {
+            public CalculatedParams(int n)
+            {
+                Num = new int[n];
+                Val = new float[n];
+            }
+            public int[] Num { get; set; }
+            public float[] Val { get; set; }
+        }
+
+        private ObservableCollection<CalculatedParams> _ParamsJ1939 = new();
+
+        public ObservableCollection<CalculatedParams> ParamsJ1939
+        { set => Set(ref _ParamsJ1939, value); get { return _ParamsJ1939; } }
+
+        static class ReceivedParameters
+        {
+            public static ObservableCollection<CalculatedParams> Parameters { get; set; } = new();//окончательные параметры (полученные и посчитанные по формулам)
+        }
+        #endregion
+
         public MainWindowViewModel()
         {
-            Protocol = new ProtocolUDS(this);
+            ParamsJ1939 = ReceivedParameters.Parameters;
+
+            UDS = new ProtocolUDS(this);
+            Protocol = new J1939_GAZ(this);
 
             Protocol.Adapter.Port.ComPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler); // Add DataReceived Event Handler
             OpenPortCommand = new LambdaCommand(OnOpenPortCommandExecuted, CanOpenPortCommandExecute);
+            SetBaudrateCommand = new LambdaCommand(OnSetBaudrateCommandExecuted, CanSetBaudrateCommandExecute);
             ReadFileCommand = new LambdaCommand(OnReadFileCommandExecuted, CanReadFileCommandExecute);
             RefreshPortsCommand = new LambdaCommand(OnRefreshPortsCommandExecuted, CanRefreshPortsCommandExecute);
             LoadFirmwareCommand = new LambdaCommand(OnLoadFirmwareCommandExecuted, CanLoadFirmwareCommandExecute);
 
-            Protocol.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
-            Protocol.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);
+            UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
+            UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);
+
             //Protocol.StateProcess = new Progress<short>(status => AddMessageToConsole(status));
         }
     }
