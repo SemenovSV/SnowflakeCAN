@@ -86,8 +86,8 @@
                                         <ColumnDefinition Width="160"/>
                                         <ColumnDefinition Width="140"/>
                                     </Grid.ColumnDefinitions>
-                                    <CheckBox Name = "cbRegularReqHTR" Content="Отправка HTR"  HorizontalAlignment="Left"  VerticalAlignment="Center" IsChecked="{Binding RegularReqHTR}" Margin="5,5,5,5"/>
-                                    <CheckBox Name ="cdReqUDS" Content="Запрос UDS" HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding RegularReqUDS}" Margin="5,5,5,5"/>
+                                    <CheckBox Name = "cbRegularReqHTR" Content="Отправка HTR"  HorizontalAlignment="Left"  VerticalAlignment="Center" IsChecked="{Binding RegularReqHTR}" Command="{Binding RegularReqHTRCommand}" Margin="5,5,5,5"/>
+                                    <CheckBox Name ="cdReqUDS" Content="Запрос UDS" HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding RegularReqUDS}" Command="{Binding RegularReqUDSCommand}" Margin="5,5,5,5"/>
                                     <Label  Grid.Column="1" Content="Режим работы:" HorizontalAlignment="Center"></Label>
                                     <ComboBox Name ="comBoxWorkMode"  Grid.Column="1" ItemsSource="{Binding WorkModeList}" Grid.Row="1" Margin="5,5,5,5" SelectedIndex="{Binding ModeIndex}"/>
                                     <Label  Grid.Column="2" Content="Уставка тем-ры, °С:" HorizontalAlignment="Center"></Label>
@@ -109,12 +109,11 @@
                                 </Grid.ColumnDefinitions>
                                 
                                 <GroupBox Header="HTR J1939">
-                                    <DataGrid Name="htrGrid"  ItemsSource="{Binding ParamsJ1939 }"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="LightGray" AlternatingRowBackground="White" HorizontalAlignment="Center">
+                                    <DataGrid Name="htrGrid"  ItemsSource="{Binding ParamsJ1939}"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="LightGray" AlternatingRowBackground="White" HorizontalAlignment="Center">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Параметр" Width="190" Binding="{Binding ParamsJ1939.Title}"/>
-                                            <DataGridTextColumn Header="Значение" Width="190" Binding="{Binding ParamsJ1939.Value}"/>
+                                            <DataGridTextColumn Header="Параметр" Width="190" Binding="{Binding Name}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Значение" Width="190" Binding="{Binding Value}" IsReadOnly="True"/>
                                         </DataGrid.Columns>
-                                        <DataGrid.Items></DataGrid.Items>
                                     </DataGrid>
                                 </GroupBox>
                                 

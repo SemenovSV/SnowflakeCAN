@@ -97,7 +97,7 @@ namespace SFC.ViewModels
                     Protocol.Adapter.Port.ComPort.Open();
                     Protocol.Adapter.Connect();
 
-                    Protocol.StartProcessReq();
+                    Protocol.StartProcessReqHtr();
                 }
                 Thread.Sleep(500);
 
@@ -281,9 +281,34 @@ namespace SFC.ViewModels
         public bool RegularReqHTR
         { set => Set(ref _RegularReqHTR, value); get => _RegularReqHTR; }
 
+        public ICommand RegularReqHTRCommand { get; }
+        private void OnRegularReqHTRCommandExecuted(object parameter)
+        {
+            if(RegularReqHTR == true)
+            {
+                Protocol.StartProcessReqHtr();
+            }
+        }
+
+        private bool CanRegularReqHTRCommandExecute(object parameter)
+        {
+            return true;
+        }
+
         private bool _RegularReqUDS = false;
-        public bool RegularReqUD
+        public bool RegularReqUDS
         { set => Set(ref _RegularReqUDS, value); get => _RegularReqUDS; }
+
+        public ICommand RegularReqUDSCommand { get; }
+        private void OnRegularReqUDSCommandExecuted(object parameter)
+        {
+            Protocol.StartProcessReqUds();
+        }
+
+        private bool CanRegularReqUDSCommandExecute(object parameter)
+        {
+            return true;
+        }
 
         private List<string> _WorkModeList = new List<string>()
         {
@@ -324,31 +349,40 @@ namespace SFC.ViewModels
 
         #region J1939_Grid
 
-        public class CalculatedParams  //посчитанные параметры для отображения в таблице терминала и построения графиков
+        public class Param
         {
-            public CalculatedParams(int n)
+            public Param(string _name)
             {
-                Num = new int[n];
-                Val = new float[n];
+                Name = _name;
+                Value = "";
             }
-            public int[] Num { get; set; }
-            public float[] Val { get; set; }
+            public Param(string _name, string _value)
+            {
+                Name = _name;
+                Value = _value;
+            }
+            public string Name { get; set; }
+
+            public string Value { get; set; }
         }
 
-        private ObservableCollection<CalculatedParams> _ParamsJ1939 = new();
-
-        public ObservableCollection<CalculatedParams> ParamsJ1939
-        { set => Set(ref _ParamsJ1939, value); get { return _ParamsJ1939; } }
-
-        static class ReceivedParameters
+        private ObservableCollection<Param> _ParamsJ1939 = new ObservableCollection<Param>()
         {
-            public static ObservableCollection<CalculatedParams> Parameters { get; set; } = new();//окончательные параметры (полученные и посчитанные по формулам)
-        }
+            new Param("Т жидкости"),
+            new Param("Выходная мощн."),
+            new Param("Режим работы"),
+            new Param("Оставшееся время")
+        };
+
+        public ObservableCollection<Param> ParamsJ1939
+        { set => Set(ref _ParamsJ1939, value); get => _ParamsJ1939; }
+
+
         #endregion
 
         public MainWindowViewModel()
         {
-            ParamsJ1939 = ReceivedParameters.Parameters;
+
 
             UDS = new ProtocolUDS(this);
             Protocol = new J1939_GAZ(this);
@@ -359,6 +393,8 @@ namespace SFC.ViewModels
             ReadFileCommand = new LambdaCommand(OnReadFileCommandExecuted, CanReadFileCommandExecute);
             RefreshPortsCommand = new LambdaCommand(OnRefreshPortsCommandExecuted, CanRefreshPortsCommandExecute);
             LoadFirmwareCommand = new LambdaCommand(OnLoadFirmwareCommandExecuted, CanLoadFirmwareCommandExecute);
+            RegularReqHTRCommand = new LambdaCommand(OnRegularReqHTRCommandExecuted, CanRegularReqHTRCommandExecute);
+            RegularReqUDSCommand = new LambdaCommand(OnRegularReqUDSCommandExecuted, CanRegularReqUDSCommandExecute);
 
             UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
             UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);
