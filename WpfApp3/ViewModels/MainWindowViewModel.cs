@@ -23,6 +23,7 @@ using System.Xml.Linq;
 using System.Collections.ObjectModel;
 using static SFC.ViewModels.MainWindowViewModel;
 
+
 namespace SFC.ViewModels
 {
     public class MainWindowViewModel : ViewModel, IDisposable
@@ -302,7 +303,10 @@ namespace SFC.ViewModels
         public ICommand RegularReqUDSCommand { get; }
         private void OnRegularReqUDSCommandExecuted(object parameter)
         {
-            Protocol.StartProcessReqUds();
+            if(RegularReqUDS == true)
+            {
+                Protocol.StartProcessReqUds();
+            }
         }
 
         private bool CanRegularReqUDSCommandExecute(object parameter)
@@ -349,21 +353,23 @@ namespace SFC.ViewModels
 
         #region J1939_Grid
 
-        public class Param
+        public class Param : ObservableObject
         {
             public Param(string _name)
             {
-                Name = _name;
-                Value = "";
+                _Name = _name;
+                _Value = "";
             }
             public Param(string _name, string _value)
             {
-                Name = _name;
-                Value = _value;
+                _Name = _name;
+                _Value = _value;
             }
-            public string Name { get; set; }
+            private string _Name;
+            public string Name { get => _Name; set { _Name = value; RaisePropertyChangedEvent(nameof(Name)); } }
 
-            public string Value { get; set; }
+            private string _Value;
+            public string Value { get => _Value; set { _Value = value; RaisePropertyChangedEvent(nameof(Value)); } }
         }
 
         private ObservableCollection<Param> _ParamsJ1939 = new ObservableCollection<Param>()
@@ -373,11 +379,203 @@ namespace SFC.ViewModels
             new Param("Режим работы"),
             new Param("Оставшееся время")
         };
-
         public ObservableCollection<Param> ParamsJ1939
         { set => Set(ref _ParamsJ1939, value); get => _ParamsJ1939; }
 
 
+        private ObservableCollection<Param> _ParamsUDS = new ObservableCollection<Param>()
+        {
+            new Param("Стадия "),
+            new Param("Режим "),
+            new Param("Время работы"),
+            new Param("Время режима"),
+            new Param("Напряжение"),
+            new Param("Обороты зад"),
+            new Param("Обороты изм"),
+            new Param("Т перегрева"),
+            new Param("Искра"),
+            new Param("Клапан"),
+            new Param("ТЭН"),
+            new Param("Индикатор пламени"),
+            new Param("Помпа"),
+        };
+        public ObservableCollection<Param> ParamsUDS
+        { set => Set(ref _ParamsUDS, value); get => _ParamsUDS; }
+
+        private ObservableCollection<Param> _ParamsDM1 = new ObservableCollection<Param>()
+        {
+            new Param("Сигнализатор"),
+            new Param("Код неисправности"),
+            new Param("FMI"),
+            new Param("Кол-во повторений"),
+        };
+        public ObservableCollection<Param> ParamsDM1
+        { set => Set(ref _ParamsDM1, value); get => _ParamsDM1; }
+
+
+        private ObservableCollection<Param> _ParamsVEP = new ObservableCollection<Param>()
+        {
+            new Param("Потенциал АКБ")
+        };
+        public ObservableCollection<Param> ParamsVEP
+        { set => Set(ref _ParamsVEP, value); get => _ParamsVEP; }
+
+
+        #endregion
+
+        #region FooterState
+        private string _FooterState = "";
+        public string FooterState
+        { set => Set(ref _FooterState, value); get => _FooterState; }
+
+        public void SetFooterState(uint _stage, uint _mode, uint _faultCode)
+        {
+            if(_faultCode == 0 || _faultCode == 255)//ToDo Разобраться с логикой пересылки
+            {
+                if(_stage == 0)
+                {
+                    if(_mode == 1)
+                    {
+                        FooterState = "Ожидание команды (0:1)";
+                    }
+                    else if (_mode == 3)
+                    {
+                        FooterState = "Сохранение данных о пуске (0:5)";
+                    }
+                    else if (_mode == 5)
+                    {
+                        FooterState = "ДОПОГ-блокировка (0:6)";
+                    }
+                }
+                if (_stage == 1)
+                {
+                    if (_mode == 0)
+                    {
+                        FooterState = "Стартовая диагностика (1:0)";
+                    }
+                    else if (_mode == 2)
+                    {
+                        FooterState = "Ожидание снижения температуры (1:2)";
+                    }
+                }
+                if (_stage == 2)
+                {
+                    if (_mode == 1)
+                    {
+                        FooterState = "Розжиг 1 (2:1)";
+                    }
+                    else if (_mode == 3)
+                    {
+                        FooterState = "Розжиг 2 (2:3)";
+                    }
+                    else if (_mode == 7)
+                    {
+                        FooterState = "Подготовка к розжигу (2:7)";
+                    }
+                    else if (_mode == 8)
+                    {
+                        FooterState = "Альтернативный розжиг 1 (2:8)";
+                    }
+                    else if (_mode == 9)
+                    {
+                        FooterState = "Альтернативный розжиг 2 (2:9)";
+                    }
+                }
+                if (_stage == 3)
+                {
+                    if (_mode == 59)
+                    {
+                        FooterState = "Нагрев на максимальной ступени (3:59)";
+                    }
+                    else if (_mode == 28)
+                    {
+                        FooterState = "Продувка перед ждущим (3:28)";
+                    }
+                    else if (_mode == 22)
+                    {
+                        FooterState = "Продувка после срыва пламени (3:22)";
+                    }
+                    else if (_mode == 30)
+                    {
+                        FooterState = "Помпа (3:30)";
+                    }
+                }
+                if (_stage == 4)
+                {
+                    if (_mode == 1)
+                    {
+                        FooterState = "Нормальная продувка (4:0)";
+                    }
+                    else if (_mode == 1)
+                    {
+                        FooterState = "Продувка при перегреве (4:1)";
+                    }
+                    else if (_mode == 1)
+                    {
+                        FooterState = "Продувка по ДОПОГ (4:6)";
+                    }
+                }
+            }
+            else if((_stage!=255 && _mode !=255))
+            {
+                FooterState = "Неисправность: ("+_faultCode+") ";
+                switch (_faultCode)
+                {
+                    case 1:
+                    case 2:
+                        FooterState += "перегрев";
+                        break;      
+                    case 3:         
+                        FooterState += "датчик перегрева";
+                        break;      
+                    case 4:         
+                        FooterState += "датчик температуры";
+                        break;      
+                    case 13:        
+                        FooterState += "нерозжиг";
+                        break;      
+                    case 10:        
+                        FooterState += "несоответствие оборотов";
+                        break;      
+                    case 27:        
+                        FooterState += "нет вращения";
+                        break;      
+                    case 28:        
+                        FooterState += "самовращение";
+                        break;      
+                    case 9:         
+                        FooterState += "блок искрового розжига";
+                        break;      
+                    case 14:        
+                        FooterState += "помпа";
+                        break;      
+                    case 17:        
+                        FooterState += "топливный клапан";
+                        break;      
+                    case 12:        
+                        FooterState += "повышенное напряжение";
+                        break;      
+                    case 15:        
+                        FooterState += "пониженное напряжение";
+                        break;      
+                    case 22:        
+                        FooterState += "пламя есть до розжига";
+                        break;      
+                    case 24:        
+                        FooterState += "пламя есть до розжига";
+                        break;      
+                    case 29:        
+                        FooterState += "КЗ ТЭН";
+                        break;      
+                    case 37:        
+                        FooterState += "блокировка при нерозжиге";
+                        break;      
+                    case 90:        
+                        FooterState += "перегрузка по току";
+                        break;
+                }
+            }
+        }
         #endregion
 
         public MainWindowViewModel()

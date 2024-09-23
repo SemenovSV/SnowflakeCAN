@@ -68,8 +68,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="80"/>
-                            <RowDefinition Height="300"/>
-                            <RowDefinition Height="190"/>
+                            <RowDefinition Height="440"/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0">
@@ -104,24 +103,41 @@
                         <StackPanel Grid.Row="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="397"/>
-                                    <ColumnDefinition Width="397"/>
+                                    <ColumnDefinition Width="387"/>
+                                    <ColumnDefinition Width="387"/>
                                 </Grid.ColumnDefinitions>
-                                
-                                <GroupBox Header="HTR J1939">
+                                <StackPanel>
+                                    <GroupBox Header="HTR J1939">
                                     <DataGrid Name="htrGrid"  ItemsSource="{Binding ParamsJ1939}"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="LightGray" AlternatingRowBackground="White" HorizontalAlignment="Center">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Параметр" Width="190" Binding="{Binding Name}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Значение" Width="190" Binding="{Binding Value}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Параметр" Width="180" Binding="{Binding Name}"  IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Значение" Width="180" Binding="{Binding Value}" IsReadOnly="True"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </GroupBox>
-                                
-                                <GroupBox Header="UDS" Grid.Column="1">
-                                    <DataGrid  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="LightGray" AlternatingRowBackground="White" HorizontalAlignment="Center">
+                                <GroupBox Header="DM1">
+                                    <DataGrid Name="dm1Grid"  ItemsSource="{Binding ParamsDM1}"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="LightGray" AlternatingRowBackground="White" HorizontalAlignment="Center">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Параметр" Width="190"></DataGridTextColumn>
-                                            <DataGridTextColumn Header="Значение" Width="190"></DataGridTextColumn>
+                                            <DataGridTextColumn Header="Параметр" Width="180" Binding="{Binding Name}"  IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Значение" Width="180" Binding="{Binding Value}" IsReadOnly="True"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </GroupBox>
+                                    <GroupBox Header="VEP1">
+                                        <DataGrid Name="vepGrid"  ItemsSource="{Binding ParamsVEP}"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="LightGray" AlternatingRowBackground="White" HorizontalAlignment="Center">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Параметр" Width="180" Binding="{Binding Name}"  IsReadOnly="True"/>
+                                                <DataGridTextColumn Header="Значение" Width="180" Binding="{Binding Value}" IsReadOnly="True"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </GroupBox>
+                                </StackPanel>
+
+                                <GroupBox Header="UDS" Grid.Column="1">
+                                    <DataGrid  Name="udsGrid" ItemsSource="{Binding ParamsUDS}" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="LightGray" AlternatingRowBackground="White" HorizontalAlignment="Center">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Параметр" Binding="{Binding Name}" IsReadOnly="True" Width="180"></DataGridTextColumn>
+                                            <DataGridTextColumn Header="Значение" Binding="{Binding Value}" IsReadOnly="True" Width="180"></DataGridTextColumn>
                                         </DataGrid.Columns>
                                         <DataGrid.Items></DataGrid.Items>
                                     </DataGrid>
@@ -140,7 +156,7 @@
                         </StackPanel>
                         <StackPanel Grid.Row="4">
                             <Grid>
-
+                                <TextBox Text="{Binding FooterState}"/>
                             </Grid>
                         </StackPanel>
                     </Grid>
