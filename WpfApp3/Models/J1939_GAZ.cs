@@ -17,16 +17,18 @@ namespace SFC.Models
     {
         public CanAdapter Adapter = new CanAdapter();
 
-        private MainWindowViewModel VM;
+        public MainWindowViewModel VM;
+
+        public ProtocolUDS UDS;
 
         byte[] TxData = new byte[8];
 
-        static uint[] UDSReqList = { 1, 3, 4, 5, 15, 16, 41, 77, 78, 79, 83, 84 };
+        static uint[] UDSReqList = { 1, 3, 4, 15, 16, 41, 77, 78, 79, 83, 84 };
 
         public J1939_GAZ(MainWindowViewModel parent)
         {
             VM = parent;
-
+            UDS = new ProtocolUDS(this);
             Adapter.Port.ComPort.BaudRate = VM.BaudrateList[VM.BaudrateIndex];
         }
 
@@ -61,11 +63,12 @@ namespace SFC.Models
                 }
                 else if(Adapter.Id == "18DAF144")//UDS
                 {
+                    UDS.ParseMessage(Adapter.RxData);
                     if (Adapter.RxData[1] == 0x22+0x40)
                     {
                         if (Adapter.RxData[2] == 0x44)
                         {
-                            if (Adapter.RxData[3]==1)//stage/mode
+                            /*if (Adapter.RxData[3]==1)//stage/mode
                             {
                                 VM.ParamsUDS[0].Value = Convert.ToString(Adapter.RxData[4]);
                                 VM.ParamsUDS[1].Value = Convert.ToString(Adapter.RxData[5]);
@@ -114,7 +117,7 @@ namespace SFC.Models
                             else if (Adapter.RxData[3]==84)//water pump
                             {
                                 VM.ParamsUDS[12].Value = Convert.ToString(Adapter.RxData[4]);
-                            }
+                            }*/
                         }
                     }
                 }
@@ -197,27 +200,27 @@ namespace SFC.Models
             {
                 switch (_spnfmi)
                 {
-                    case (3<<19)+168:   code = 12; break;
-                    case (4<<19)+168:   code = 15; break;
-                    case 0:
-                    case (0<<19)+854:   code = 1 ; break;
-                    case (12<<19)+854:  code = 3 ; break;
-                    case (5<<19)+855:   code = 5 ; break;
-                    case (12<<19)+856:  code = 9 ; break;
-                    case (18<<19)+857:  code = 10; break;
-                    case (1<<19)+857:   code = 27; break;
-                    case (0<<19)+857:   code = 28; break;
-                    case (0<<19)+858:   code = 22; break;
-                    case (0<<19)+859:   code = 24; break;
-                    case (6<<19)+860:   code = 29; break;
+                    case (3<<19)+168: code = 12; break;
+                    case (4<<19)+168: code = 15; break;
+                    case (0<<19)+854: code = 1; break;
+                    case (12<<19)+854: code = 3; break;
+                    case (5<<19)+855: code = 5; break;
+                    case (12<<19)+856: code = 9; break;
+                    case (18<<19)+857: code = 10; break;
+                    case (1<<19)+857: code = 27; break;
+                    case (0<<19)+857: code = 28; break;
+                    case (0<<19)+858: code = 22; break;
+                    case (0<<19)+859: code = 24; break;
+                    case (6<<19)+860: code = 29; break;
                     case (12<<19)+1044: code = 14; break;
                     case (12<<19)+1442: code = 17; break;
-                    case (0<<19)+1677:  code = 37; break;
-                    case (0<<12)+1687:  code = 4 ; break;
+                    case (0<<19)+1677: code = 37; break;
+                    case (0<<12)+1687: code = 4; break;
                     case (0<<19)+10760: code = 90; break;
-                    default:            code = (uint)_spnfmi; break;
+                    default: code = (uint)_spnfmi; break;
                 }
             }
+            else code = (uint)_spnfmi;
             return code;
         }
     }

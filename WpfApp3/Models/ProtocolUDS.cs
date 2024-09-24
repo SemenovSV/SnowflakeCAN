@@ -14,10 +14,10 @@ namespace SFC.Models
 {
     public class ProtocolUDS
     {
-        public CanAdapter Adapter = new CanAdapter();
+        //public CanAdapter Adapter = new CanAdapter();
         public IntelHEX Hex = new IntelHEX();
 
-        private MainWindowViewModel VM;//ToDo Возможно получится избавиться от связи
+        private J1939_GAZ Parent;//ToDo Возможно получится избавиться от связи
 
         //const string IdTxUDS = "18DA44F1";
         string IdTxUDS = "";
@@ -27,26 +27,26 @@ namespace SFC.Models
 
         byte[] TxData = new byte[8];
 
-        private const byte SERVICE_SESSION_CONTROL          = 0x10;
-        private const byte SERVICE_ECU_RESET                = 0x11;
-        private const byte SERVICE_READ_DTC_INFO            = 0x19;
-        private const byte SERVICE_READ_DATA_BY_ID          = 0x22;
-        private const byte SERVICE_SECURITY_ACCESS          = 0x27;
-        private const byte SERVICE_WRITE_DATA_BY_ID         = 0x2E;
-        private const byte SERVICE_ROUTINE_CONTROL          = 0x31;
-        private const byte SERVICE_IO_CONTROL_BY_ID         = 0x2F;
-        private const byte SERVICE_PROGRAMM_START_ADDRESS   = 0x34;
-        private const byte SERVICE_TRANSFER_DATA            = 0x35;
-        private const byte SERVICE_PROGRAMM_DATA            = 0x36;
-        private const byte SERVICE_PROGRAMM_STOP            = 0x37;
-        private const byte SERVICE_TESTER_PRESENT           = 0x3E;
-        private const byte SERVICE_DTC_CONTROL              = 0x85;
+        public const byte SERVICE_SESSION_CONTROL          = 0x10;
+        public const byte SERVICE_ECU_RESET                = 0x11;
+        public const byte SERVICE_READ_DTC_INFO            = 0x19;
+        public const byte SERVICE_READ_DATA_BY_ID          = 0x22;
+        public const byte SERVICE_SECURITY_ACCESS          = 0x27;
+        public const byte SERVICE_WRITE_DATA_BY_ID         = 0x2E;
+        public const byte SERVICE_ROUTINE_CONTROL          = 0x31;
+        public const byte SERVICE_IO_CONTROL_BY_ID         = 0x2F;
+        public const byte SERVICE_PROGRAMM_START_ADDRESS   = 0x34;
+        public const byte SERVICE_TRANSFER_DATA            = 0x35;
+        public const byte SERVICE_PROGRAMM_DATA            = 0x36;
+        public const byte SERVICE_PROGRAMM_STOP            = 0x37;
+        public const byte SERVICE_TESTER_PRESENT           = 0x3E;
+        public const byte SERVICE_DTC_CONTROL              = 0x85;
 
 
-        private const byte SESSION_DEFAULT                  = 1;
-        private const byte SESSION_PROGRAMMING              = 2;
-        private const byte SESSION_EXTENDED_DIAGNOSTIC      = 3;
-        private const byte SESSION_SAFETY_SYSYEM_DIAGNOSTIC = 4;
+        public const byte SESSION_DEFAULT                  = 1;
+        public const byte SESSION_PROGRAMMING              = 2;
+        public const byte SESSION_EXTENDED_DIAGNOSTIC      = 3;
+        public const byte SESSION_SAFETY_SYSYEM_DIAGNOSTIC = 4;
 
         public const short WAITING             = 0;
         public const short ACCESSING           = 1;
@@ -98,52 +98,96 @@ namespace SFC.Models
 
         public uint LoadFaultCnt = 0;
 
-        public ProtocolUDS(MainWindowViewModel parent)
+        public ProtocolUDS(J1939_GAZ parent)
         {
-            VM = parent;
+            Parent = parent;
         }
 
-        public void ParseMessage()
+        public void ParseMessage(byte[] message)
         {
-            if (Adapter.ProcessPacket_f)
-            {
-                Adapter.ProcessPacket_f = false;
-                if (Adapter.Id == IdRxUDS)
-                {
-                    if ((Adapter.RxData[0] & 0xF0) == 0)//single frame
+                    if ((message[0] & 0xF0) == 0)//single frame
                     {
-                        byte Service = Adapter.RxData[1];
+                        byte Service = message[1];
                         if (Service == SERVICE_SESSION_CONTROL+0x40)
                         {
-                            if(Adapter.RxData[2] == SESSION_PROGRAMMING)
+                            if(message[2] == SESSION_PROGRAMMING)
                             {
-                                VM.ConsoleContent +="Переход на сессию программирования осуществлён\r";
+                                Parent.VM.ConsoleContent +="Переход на сессию программирования осуществлён\r";
                                 SwitchedToSession_f = true;
                                 LoadFaultCnt = 0;
                             }
                         }
                         else if (Service == SERVICE_ECU_RESET+0x40)
                         {
-                            if(Adapter.RxData[2] == 1)
+                            if(message[2] == 1)
                             {
-                                VM.ConsoleContent +="Переход в загрузчик осуществлён\r";
+                                Parent.VM.ConsoleContent +="Переход в загрузчик осуществлён\r";
                                 SwitchedToBoot_f = true;
                                 LoadFaultCnt = 0;
                             }
-                            else if(Adapter.RxData[2] == 2)
+                            else if(message[2] == 2)
                             {
-                                VM.ConsoleContent +="Обновление ПО успешно завершено\r";
+                                Parent.VM.ConsoleContent +="Обновление ПО успешно завершено\r";
                                 RunnedMainApplication_f = true;
                                 LoadFaultCnt = 0;
                             }
                         }
+                        else if (Service == SERVICE_READ_DATA_BY_ID+0x40)
+                        {
+                            if (message[3]==1)//stage/mode
+                            {
+                                Parent.VM.ParamsUDS[0].Value = Convert.ToString(message[4]);
+                                Parent.VM.ParamsUDS[1].Value = Convert.ToString(message[5]);
+                                Parent.VM.SetFooterState(message[4], message[5], 255);
+                            }
+                            else if (message[3]==3)//work time
+                            {
+                                Parent.VM.ParamsUDS[2].Value = Convert.ToString(((message[4]<<8)+message[5])*60+message[6]);
+                            }
+                            else if (message[3]==4)//mode time
+                            {
+                                Parent.VM.ParamsUDS[3].Value = Convert.ToString((message[4]<<8)+message[5]);
+                            }
+                            else if (message[3]==15)//rev defined
+                            {
+                                Parent.VM.ParamsUDS[4].Value = Convert.ToString(message[4]);
+                            }
+                            else if (message[3]==16)//rev measured
+                            {
+                                Parent.VM.ParamsUDS[5].Value = Convert.ToString(message[4]);
+                            }
+                            else if (message[3]==41)// T overheat
+                            {
+                                Parent.VM.ParamsUDS[6].Value = Convert.ToString(message[4]-40);
+                            }
+                            else if (message[3]==77)//spark plug
+                            {
+                                Parent.VM.ParamsUDS[7].Value = Convert.ToString(message[4]);
+                            }
+                            else if (message[3]==78)//fuel valve
+                            {
+                                Parent.VM.ParamsUDS[8].Value = Convert.ToString(message[4]);
+                            }
+                            else if (message[3]==79)//injector heater
+                            {
+                                Parent.VM.ParamsUDS[9].Value = Convert.ToString(message[4]);
+                            }
+                            else if (message[3]==83)//photodiode
+                            {
+                                Parent.VM.ParamsUDS[10].Value = Convert.ToString((message[4]<<8)+message[5]);
+                            }
+                            else if (message[3]==84)//water pump
+                            {
+                                Parent.VM.ParamsUDS[11].Value = Convert.ToString(message[4]);
+                            }
+                        }
                         else if (Service == SERVICE_SECURITY_ACCESS+0x40)
                         {
-                            if(Adapter.RxData[2] == 7) //получен Seed
+                            if(message[2] == 7) //получен Seed
                             {
                                 GetSeed_f = true;
                                 LoadFaultCnt = 0;
-                                uint seed = (uint)(((Adapter.RxData[3] & 0xFF) << 24) + ((Adapter.RxData[4] & 0xFF) << 16) + ((Adapter.RxData[5] & 0xFF) << 8) + (Adapter.RxData[6] & 0xFF));//ToDo
+                                uint seed = (uint)(((message[3] & 0xFF) << 24) + ((message[4] & 0xFF) << 16) + ((message[5] & 0xFF) << 8) + (message[6] & 0xFF));//ToDo
                                 if(seed == 0xFFFFFFFF) Accesed_f = true;
 
                                 uint countKey = (seed + 0x29C) * 0x573B4;
@@ -156,18 +200,18 @@ namespace SFC.Models
                                 TxData[5] = (byte)((countKey>>8) & 0xFF);
                                 TxData[6] = (byte)((countKey) & 0xFF);
                                 TxData[7] = 0xFF;
-                                Adapter.SendMessage(IdTxUDS, TxData);
+                                Parent.Adapter.SendMessage(IdTxUDS, TxData);
                             }
-                            else if(Adapter.RxData[2] == 8)//резутьтат Key-verification положительный
+                            else if(message[2] == 8)//резутьтат Key-verification положительный
                             {
-                                VM.ConsoleContent +="Уровень доступа получен\r";
+                                Parent.VM.ConsoleContent +="Уровень доступа получен\r";
                                 Accesed_f = true;
                                 LoadFaultCnt = 0;
                             }
                         }
                         else if(Service == SERVICE_PROGRAMM_START_ADDRESS+0x40)
                         {
-                            VM.ConsoleContent +="Загрузка управляющей программы\r";
+                            Parent.VM.ConsoleContent +="Загрузка управляющей программы\r";
                             StartLoading_f = true;
                             LoadFaultCnt = 0;
                         }
@@ -181,29 +225,27 @@ namespace SFC.Models
                             {
                                 Loaded_f = true;
                                 StopLoading();
-                                VM.ConsoleContent +="Загрузка завершена\r";
+                                Parent.VM.ConsoleContent +="Загрузка завершена\r";
                             }
                             LoadProgress?.Report((ushort)(100*(FragmentCounter+1)/Hex.getFragmentsNumb()));
                             LoadTimeS?.Report((uint)LoadTime.ElapsedMilliseconds/1000);
                         }
                         else if (Service == SERVICE_ROUTINE_CONTROL+0x40)
                         {
-                            if (Adapter.RxData[2] == 1)//check CRC
+                            if (message[2] == 1)//check CRC
                             {
-                                VM.ConsoleContent +="Контрольная сумма проверена\r";
+                                Parent.VM.ConsoleContent +="Контрольная сумма проверена\r";
                                 CheckedCrc_f = true;
                                 LoadFaultCnt = 0;
                                 LoadTime.Stop();
                             }
                         }
                     }
-                    else if(Adapter.RxData[0] == 0x30)//FlowControl
+                    else if(message[0] == 0x30)//FlowControl
                     {
                         LoadFaultCnt = 0;
                         WaitFlowControl_f = false;
                     }
-                }
-            }
         }
 
         public Thread StartPricessLoading()
@@ -230,6 +272,9 @@ namespace SFC.Models
 
             LoadFaultCnt = 0;
 
+            LoadProgress?.Report(0);
+            LoadTimeS?.Report(0);
+
             return LoadThread;
 
         }
@@ -247,14 +292,14 @@ namespace SFC.Models
                 else if (!RunnedMainApplication_f) RunMainApplication();
                 else
                 {
-                    VM.EnableAction = true;
+                    Parent.VM.EnableAction = true;
                     return;
                 }
 
                 if (LoadFaultCnt>50)
                 {
                     StopProcessLoading();
-                    VM.EnableAction = true;
+                    Parent.VM.EnableAction = true;
                     return;
                 }
             }
@@ -262,7 +307,7 @@ namespace SFC.Models
 
         private void StopProcessLoading()
         {
-            VM.ConsoleContent +="Загрузка не удалась\r";
+            Parent.VM.ConsoleContent +="Загрузка не удалась\r";
         }
 
         private void GetAccess()
@@ -277,7 +322,7 @@ namespace SFC.Models
                 TxData[5]=0xFF;
                 TxData[6]=0xFF;
                 TxData[7]=0xFF;
-                Adapter.SendMessage(IdTxUDS, TxData);
+                Parent.Adapter.SendMessage(IdTxUDS, TxData);
                 LoadFaultCnt++;
             }
             Thread.Sleep(DELAY_ATTEMPTING);
@@ -293,7 +338,7 @@ namespace SFC.Models
             TxData[5]=0xFF;
             TxData[6]=0xFF;
             TxData[7]=0xFF;
-            Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.Adapter.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
 
             Thread.Sleep(DELAY_ATTEMPTING);
@@ -310,7 +355,7 @@ namespace SFC.Models
             TxData[5]=0xFF;
             TxData[6]=0xFF;
             TxData[7]=0xFF;
-            Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.Adapter.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
 
             Thread.Sleep(DELAY_ATTEMPTING);
@@ -318,6 +363,8 @@ namespace SFC.Models
 
         private void StartLoading()
         {
+            Parent.VM.RegularReqUDS = false;
+            Parent.VM.RegularReqHTR = false;
             StateProcess?.Report(START_LOADING);
             int start_addr = Hex.getProgrammStartAdress();
             TxData[0]=5;
@@ -328,7 +375,7 @@ namespace SFC.Models
             TxData[5]=(byte)((start_addr)&0xFF);
             TxData[6]=0xFF;
             TxData[7]=0xFF;
-            Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.Adapter.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
 
             Thread.Sleep(DELAY_ATTEMPTING);
@@ -337,8 +384,7 @@ namespace SFC.Models
         private void LoadFirmware()
         {
             StateProcess?.Report(PROCESS_LOADING);
-            //Thread.Sleep(10);
-            if (Adapter.TransmissionSuccessed() && !WaitFlowControl_f && !WaitCorrectTransfer_f)
+            if (Parent.Adapter.TransmissionSuccessed() && !WaitFlowControl_f && !WaitCorrectTransfer_f)
             {
                 if (PacketCounter == 0)
                 {
@@ -373,7 +419,7 @@ namespace SFC.Models
                         PacketCounter = 0;
                     }
                 }
-                Adapter.SendMessage(IdTxUDS, TxData);
+                Parent.Adapter.SendMessage(IdTxUDS, TxData);
             }
             else
             {
@@ -393,7 +439,7 @@ namespace SFC.Models
             TxData[6]=0xFF;
             TxData[7]=0xFF;
 
-            Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.Adapter.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
         }
 
@@ -410,7 +456,7 @@ namespace SFC.Models
             TxData[6]=0xFF;
             TxData[7]=0xFF;
 
-            Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.Adapter.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
             Thread.Sleep(DELAY_ATTEMPTING);
         }
@@ -426,16 +472,20 @@ namespace SFC.Models
             TxData[6]=0xFF;
             TxData[7]=0xFF;
 
-            Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.Adapter.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
             Thread.Sleep(DELAY_ATTEMPTING);
         }
 
         public void SetReceiverId(byte[] version)
         {
-            if (version[0] == 25)//MAZ 35SP
+            if (version[0] == 25 && version[2] == 26)//MAZ 35SP
             {
                 ReceiverId = 0x39;
+            }
+            if (version[0] == 25 && version[2] == 27)//LIAZ 35SP
+            {
+                ReceiverId = 0x44;
             }
             else if(version[0] == 2)//MAZ Planar 2
             {

@@ -29,7 +29,7 @@ namespace SFC.ViewModels
     public class MainWindowViewModel : ViewModel, IDisposable
     {
 
-        public ProtocolUDS UDS;
+        //public ProtocolUDS UDS;
         public J1939_GAZ Protocol;
         #region Font
         private ushort _TxtFontSize = 18;
@@ -167,13 +167,13 @@ namespace SFC.ViewModels
 
             if (FilePath != null && FilePath.Length > 0)
             {
-                UDS.Hex.LoadHexFile(FilePath);
-                UDS.Hex.insertCRC16(false);
+                Protocol.UDS.Hex.LoadHexFile(FilePath);
+                Protocol.UDS.Hex.insertCRC16(false);
                 ConsoleContent += "Версия выбранной прошивки: ";
-                ConsoleContent += UDS.Hex.Version[0] + "." + UDS.Hex.Version[1] + "." + UDS.Hex.Version[2] + "." + UDS.Hex.Version[3] + "\r";
+                ConsoleContent += Protocol.UDS.Hex.Version[0] + "." + Protocol.UDS.Hex.Version[1] + "." + Protocol.UDS.Hex.Version[2] + "." + Protocol.UDS.Hex.Version[3] + "\r";
                 ConsoleContent += "Дата создания: ";
-                ConsoleContent += UDS.Hex.Date[0] + "." + UDS.Hex.Date[1] + ".20" + UDS.Hex.Date[2]+"\r";
-                UDS.SetReceiverId(UDS.Hex.Version);
+                ConsoleContent += Protocol.UDS.Hex.Date[0] + "." + Protocol.UDS.Hex.Date[1] + ".20" +Protocol.UDS.Hex.Date[2]+"\r";
+                Protocol.UDS.SetReceiverId(Protocol.UDS.Hex.Version);
             }
         }
 
@@ -204,11 +204,11 @@ namespace SFC.ViewModels
         {
             ConsoleContent = "";
             ConsoleContent += "Версия выбранной прошивки: ";
-            ConsoleContent += UDS.Hex.Version[0] + "." + UDS.Hex.Version[1] + "." + UDS.Hex.Version[2] + "." + UDS.Hex.Version[3] + "\r";
+            ConsoleContent += Protocol.UDS.Hex.Version[0] + "." + Protocol.UDS.Hex.Version[1] + "." + Protocol.UDS.Hex.Version[2] + "." + Protocol.UDS.Hex.Version[3] + "\r";
             ConsoleContent += "Дата создания: ";
-            ConsoleContent += UDS.Hex.Date[0] + "." + UDS.Hex.Date[1] + ".20" + UDS.Hex.Date[2]+ "\r";
+            ConsoleContent += Protocol.UDS.Hex.Date[0] + "." + Protocol.UDS.Hex.Date[1] + ".20" + Protocol.UDS.Hex.Date[2]+ "\r";
             EnableAction = false;
-            UDS.StartPricessLoading();
+            Protocol.UDS.StartPricessLoading();
         }
 
         private bool CanLoadFirmwareCommandExecute(object parameter) => true;
@@ -225,7 +225,7 @@ namespace SFC.ViewModels
         #region Console
         private void AddMessageToConsole(short state)
         {
-            switch (state)
+            /*switch (state)
             {
                 case ProtocolUDS.WAITING:
                     ConsoleContent = "";
@@ -272,7 +272,7 @@ namespace SFC.ViewModels
                 case ProtocolUDS.BAD_MAIN_PROGRAM:
                     ConsoleContent+="";
                     break;
-            }
+            }*/
             ConsoleContent+="\r";
         }
         #endregion
@@ -389,7 +389,6 @@ namespace SFC.ViewModels
             new Param("Режим "),
             new Param("Время работы"),
             new Param("Время режима"),
-            new Param("Напряжение"),
             new Param("Обороты зад"),
             new Param("Обороты изм"),
             new Param("Т перегрева"),
@@ -405,7 +404,7 @@ namespace SFC.ViewModels
         private ObservableCollection<Param> _ParamsDM1 = new ObservableCollection<Param>()
         {
             new Param("Сигнализатор"),
-            new Param("Код неисправности"),
+            new Param("SPN"),
             new Param("FMI"),
             new Param("Кол-во повторений"),
         };
@@ -428,98 +427,105 @@ namespace SFC.ViewModels
         public string FooterState
         { set => Set(ref _FooterState, value); get => _FooterState; }
 
+        static uint s_stage = 255;
+        static uint s_mode = 255;
+        static uint s_faultCode = 255;
         public void SetFooterState(uint _stage, uint _mode, uint _faultCode)
         {
-            if(_faultCode == 0 || _faultCode == 255)//ToDo Разобраться с логикой пересылки
+            if (_stage != 255) s_stage = _stage;
+            if (_mode != 255) s_mode = _mode;
+            if (_faultCode != 255) s_faultCode =_faultCode;
+
+            if (s_faultCode == 0)
             {
-                if(_stage == 0)
+                if(s_stage == 0)
                 {
-                    if(_mode == 1)
+                    if(s_mode == 1)
                     {
                         FooterState = "Ожидание команды (0:1)";
                     }
-                    else if (_mode == 3)
+                    else if (s_mode == 5)
                     {
                         FooterState = "Сохранение данных о пуске (0:5)";
                     }
-                    else if (_mode == 5)
+                    else if (s_mode == 6)
                     {
                         FooterState = "ДОПОГ-блокировка (0:6)";
                     }
                 }
-                if (_stage == 1)
+                if (s_stage == 1)
                 {
-                    if (_mode == 0)
+                    if (s_mode == 0)
                     {
                         FooterState = "Стартовая диагностика (1:0)";
                     }
-                    else if (_mode == 2)
+                    else if (s_mode == 2)
                     {
                         FooterState = "Ожидание снижения температуры (1:2)";
                     }
                 }
-                if (_stage == 2)
+                if (s_stage == 2)
                 {
-                    if (_mode == 1)
+                    if (s_mode == 1)
                     {
                         FooterState = "Розжиг 1 (2:1)";
                     }
-                    else if (_mode == 3)
+                    else if (s_mode == 3)
                     {
                         FooterState = "Розжиг 2 (2:3)";
                     }
-                    else if (_mode == 7)
+                    else if (s_mode == 7)
                     {
                         FooterState = "Подготовка к розжигу (2:7)";
                     }
-                    else if (_mode == 8)
+                    else if (s_mode == 8)
                     {
                         FooterState = "Альтернативный розжиг 1 (2:8)";
                     }
-                    else if (_mode == 9)
+                    else if (s_mode == 9)
                     {
                         FooterState = "Альтернативный розжиг 2 (2:9)";
                     }
                 }
-                if (_stage == 3)
+                if (s_stage == 3)
                 {
-                    if (_mode == 59)
+                    if (s_mode == 59)
                     {
                         FooterState = "Нагрев на максимальной ступени (3:59)";
                     }
-                    else if (_mode == 28)
+                    else if (s_mode == 28)
                     {
                         FooterState = "Продувка перед ждущим (3:28)";
                     }
-                    else if (_mode == 22)
+                    else if (s_mode == 22)
                     {
                         FooterState = "Продувка после срыва пламени (3:22)";
                     }
-                    else if (_mode == 30)
+                    else if (s_mode == 30)
                     {
                         FooterState = "Помпа (3:30)";
                     }
                 }
-                if (_stage == 4)
+                if (s_stage == 4)
                 {
-                    if (_mode == 1)
+                    if (s_mode == 0)
                     {
                         FooterState = "Нормальная продувка (4:0)";
                     }
-                    else if (_mode == 1)
+                    else if (s_mode == 1)
                     {
                         FooterState = "Продувка при перегреве (4:1)";
                     }
-                    else if (_mode == 1)
+                    else if (s_mode == 6)
                     {
                         FooterState = "Продувка по ДОПОГ (4:6)";
                     }
                 }
             }
-            else if((_stage!=255 && _mode !=255))
+            else
             {
-                FooterState = "Неисправность: ("+_faultCode+") ";
-                switch (_faultCode)
+                FooterState = "Неисправность: ("+s_faultCode+") ";
+                switch (s_faultCode)
                 {
                     case 1:
                     case 2:
@@ -562,7 +568,7 @@ namespace SFC.ViewModels
                         FooterState += "пламя есть до розжига";
                         break;      
                     case 24:        
-                        FooterState += "пламя есть до розжига";
+                        FooterState += "пламя есть после продувки";
                         break;      
                     case 29:        
                         FooterState += "КЗ ТЭН";
@@ -580,9 +586,6 @@ namespace SFC.ViewModels
 
         public MainWindowViewModel()
         {
-
-
-            UDS = new ProtocolUDS(this);
             Protocol = new J1939_GAZ(this);
 
             Protocol.Adapter.Port.ComPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler); // Add DataReceived Event Handler
@@ -594,8 +597,8 @@ namespace SFC.ViewModels
             RegularReqHTRCommand = new LambdaCommand(OnRegularReqHTRCommandExecuted, CanRegularReqHTRCommandExecute);
             RegularReqUDSCommand = new LambdaCommand(OnRegularReqUDSCommandExecuted, CanRegularReqUDSCommandExecute);
 
-            UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
-            UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);
+            Protocol.UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
+            Protocol.UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);
 
             //Protocol.StateProcess = new Progress<short>(status => AddMessageToConsole(status));
         }
