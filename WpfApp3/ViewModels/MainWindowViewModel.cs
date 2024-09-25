@@ -31,6 +31,8 @@ namespace SFC.ViewModels
 
         //public ProtocolUDS UDS;
         public J1939_GAZ Protocol;
+        private SynchronizationContext? uiContext = SynchronizationContext.Current;
+
         #region Font
         private ushort _TxtFontSize = 18;
         public ushort TxtFontSize
@@ -48,7 +50,7 @@ namespace SFC.ViewModels
         public bool CommunicationEnable
         { set => Set(ref _CommunicationEnable, value); get => _CommunicationEnable; }
 
-        private List<int> _BaudrateList = new List<int>() {20000, 50000, 100000, 125000, 250000, 500000, 800000, 1000000};
+        private List<int> _BaudrateList = new List<int>() { 20000, 50000, 100000, 125000, 250000, 500000, 800000, 1000000 };
         public List<int> BaudrateList
         { set => Set(ref _BaudrateList, value); get => _BaudrateList; }
 
@@ -203,7 +205,7 @@ namespace SFC.ViewModels
         private void OnLoadFirmwareCommandExecuted(object parameter)
         {
             ConsoleContent = "";
-            ConsoleContent += "Версия выбранной прошивки: ";
+            ConsoleContent += "Версия выбранного ПО: ";
             ConsoleContent += Protocol.UDS.Hex.Version[0] + "." + Protocol.UDS.Hex.Version[1] + "." + Protocol.UDS.Hex.Version[2] + "." + Protocol.UDS.Hex.Version[3] + "\r";
             ConsoleContent += "Дата создания: ";
             ConsoleContent += Protocol.UDS.Hex.Date[0] + "." + Protocol.UDS.Hex.Date[1] + ".20" + Protocol.UDS.Hex.Date[2]+ "\r";
@@ -222,70 +224,15 @@ namespace SFC.ViewModels
         { set => Set(ref _ConsoleContent, value); get => _ConsoleContent; }
         #endregion
 
-        #region Console
-        private void AddMessageToConsole(short state)
-        {
-            /*switch (state)
-            {
-                case ProtocolUDS.WAITING:
-                    ConsoleContent = "";
-                    break;
-                case ProtocolUDS.ACCESSING:
-                    ConsoleContent+="Получение доступа";
-                    break;
-                case ProtocolUDS.SWITCH_TO_BOOT:
-                    ConsoleContent+="Переход в программу загрузчика";
-                    break;
-                case ProtocolUDS.START_LOADING:
-                    ConsoleContent+="Старт загрузки";
-                    break;
-                case ProtocolUDS.PROCESS_LOADING:
-                    ConsoleContent+="Загрузка";
-                    break;
-                case ProtocolUDS.END_LOADING:
-                    ConsoleContent+="Завершение загрузки";
-                    break;
-                case ProtocolUDS.CHECK_CRC:
-                    ConsoleContent+="Проверка контрольной суммы";
-                    break;
-                case ProtocolUDS.RUN_MAIN_PROGRAM:
-                    ConsoleContent+="Запуск основной программы";
-                    break;
-                case ProtocolUDS.BAD_ACCESS:
-                    ConsoleContent+="";
-                    break;
-                case ProtocolUDS.BAD_SWITCH_TO_BOOT:
-                    ConsoleContent+="";
-                    break;
-                case ProtocolUDS.BAD_START_LOADING:
-                    ConsoleContent+="";
-                    break;
-                case ProtocolUDS.BAD_PROCESS_LOADING:
-                    ConsoleContent+="";
-                    break;
-                case ProtocolUDS.BAD_END_LOADING:
-                    ConsoleContent+="";
-                    break;
-                case ProtocolUDS.BAD_CRC:
-                    ConsoleContent+="";
-                    break;
-                case ProtocolUDS.BAD_MAIN_PROGRAM:
-                    ConsoleContent+="";
-                    break;
-            }*/
-            ConsoleContent+="\r";
-        }
-        #endregion
-
         #region Control
-        private bool _RegularReqHTR =true;
+        private bool _RegularReqHTR = true;
         public bool RegularReqHTR
         { set => Set(ref _RegularReqHTR, value); get => _RegularReqHTR; }
 
         public ICommand RegularReqHTRCommand { get; }
         private void OnRegularReqHTRCommandExecuted(object parameter)
         {
-            if(RegularReqHTR == true)
+            if (RegularReqHTR == true)
             {
                 Protocol.StartProcessReqHtr();
             }
@@ -303,7 +250,7 @@ namespace SFC.ViewModels
         public ICommand RegularReqUDSCommand { get; }
         private void OnRegularReqUDSCommandExecuted(object parameter)
         {
-            if(RegularReqUDS == true)
+            if (RegularReqUDS == true)
             {
                 Protocol.StartProcessReqUds();
             }
@@ -438,9 +385,9 @@ namespace SFC.ViewModels
 
             if (s_faultCode == 0)
             {
-                if(s_stage == 0)
+                if (s_stage == 0)
                 {
-                    if(s_mode == 1)
+                    if (s_mode == 1)
                     {
                         FooterState = "Ожидание команды (0:1)";
                     }
@@ -530,57 +477,94 @@ namespace SFC.ViewModels
                     case 1:
                     case 2:
                         FooterState += "перегрев";
-                        break;      
-                    case 3:         
+                        break;
+                    case 3:
                         FooterState += "датчик перегрева";
-                        break;      
-                    case 4:         
+                        break;
+                    case 4:
                         FooterState += "датчик температуры";
-                        break;      
-                    case 13:        
+                        break;
+                    case 13:
                         FooterState += "нерозжиг";
-                        break;      
-                    case 10:        
+                        break;
+                    case 10:
                         FooterState += "несоответствие оборотов";
-                        break;      
-                    case 27:        
+                        break;
+                    case 27:
                         FooterState += "нет вращения";
-                        break;      
-                    case 28:        
+                        break;
+                    case 28:
                         FooterState += "самовращение";
-                        break;      
-                    case 9:         
+                        break;
+                    case 9:
                         FooterState += "блок искрового розжига";
-                        break;      
-                    case 14:        
+                        break;
+                    case 14:
                         FooterState += "помпа";
-                        break;      
-                    case 17:        
+                        break;
+                    case 17:
                         FooterState += "топливный клапан";
-                        break;      
-                    case 12:        
+                        break;
+                    case 12:
                         FooterState += "повышенное напряжение";
-                        break;      
-                    case 15:        
+                        break;
+                    case 15:
                         FooterState += "пониженное напряжение";
-                        break;      
-                    case 22:        
+                        break;
+                    case 22:
                         FooterState += "пламя есть до розжига";
-                        break;      
-                    case 24:        
+                        break;
+                    case 24:
                         FooterState += "пламя есть после продувки";
-                        break;      
-                    case 29:        
+                        break;
+                    case 29:
                         FooterState += "КЗ ТЭН";
-                        break;      
-                    case 37:        
+                        break;
+                    case 37:
                         FooterState += "блокировка при нерозжиге";
-                        break;      
-                    case 90:        
+                        break;
+                    case 90:
                         FooterState += "перегрузка по току";
                         break;
                 }
             }
+        }
+        #endregion
+
+        #region ConsoleMessages
+
+        private ObservableCollection<Message> _MessagesRX = new ObservableCollection<Message>() { };
+        public ObservableCollection<Message> MessagesRX
+        { set => Set(ref _MessagesRX, value); get => _MessagesRX; }
+
+        private ObservableCollection<Message> _MessagesTX = new ObservableCollection<Message>() { };
+        public ObservableCollection<Message> MessagesTX
+        { set => Set(ref _MessagesTX, value); get => _MessagesTX; }
+
+        public void AddMessageToTerminal(string id, byte[] data)
+        {
+            Message mes = new Message(id, data, GetMessageName(id));
+            foreach(Message _mes in MessagesRX)
+            {
+                if(_mes.ID == id)
+                {
+                    //ToDo
+                    return;
+                }
+            }
+            uiContext.Send(x => MessagesRX.Add(mes), null);
+        }
+        public string GetMessageName(string id)
+        {
+            switch (id)
+            {
+                case "18FE6D44": return "HTR_STATUS";
+                case "18FEF744": return "VEP";
+                case "18FEF944": return "SOFT";
+                case "18FECA44": return "DM1";
+                case "18DAF144": return "UDS";
+            }
+            return "";
         }
         #endregion
 
@@ -603,6 +587,4 @@ namespace SFC.ViewModels
             //Protocol.StateProcess = new Progress<short>(status => AddMessageToConsole(status));
         }
     }
-
-
 }

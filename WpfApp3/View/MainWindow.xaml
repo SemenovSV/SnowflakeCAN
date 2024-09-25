@@ -177,37 +177,37 @@
                                     <ColumnDefinition Width="395"/>
                                 </Grid.ColumnDefinitions>
 
-                                <GroupBox Header="Передаваемые" Grid.Column="0">
-                                    <DataGrid FontSize="12">
+                                <GroupBox Header="Переданные" Grid.Column="0">
+                                    <DataGrid  FontSize="12" Name="txGrid"  ItemsSource="{Binding MessagesTX}"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="Gainsboro" AlternatingRowBackground="White" HorizontalAlignment="Center">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Name" Width="45" Binding="{Binding Name}"  IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Cnt" Width="34" Binding="{Binding Cnt}"  IsReadOnly="True"/>
                                             <DataGridTextColumn Header="ID"  Width="34" Binding="{Binding ID}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D1"  Width="34" Binding="{Binding D1}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D2"  Width="34" Binding="{Binding D2}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D3"  Width="34" Binding="{Binding D3}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D4"  Width="34" Binding="{Binding D4}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D5"  Width="34" Binding="{Binding D4}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D6"  Width="34" Binding="{Binding D5}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D7"  Width="34" Binding="{Binding D6}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D8"  Width="34" Binding="{Binding D7}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D1"  Width="34" Binding="{Binding D[0]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D2"  Width="34" Binding="{Binding D[1]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D3"  Width="34" Binding="{Binding D[2]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D4"  Width="34" Binding="{Binding D[3]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D5"  Width="34" Binding="{Binding D[4]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D6"  Width="34" Binding="{Binding D[5]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D7"  Width="34" Binding="{Binding D[6]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D8"  Width="34" Binding="{Binding D[7]}" IsReadOnly="True"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </GroupBox>
-                                <GroupBox Header="Принимаемые" Grid.Column="1">
-                                    <DataGrid FontSize="12">
+                                <GroupBox Header="Принятые" Grid.Column="1">
+                                    <DataGrid FontSize="12" Name="rxGrid"  ItemsSource="{Binding MessagesRX}"  AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="Gainsboro" AlternatingRowBackground="White" HorizontalAlignment="Center">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Name" Width="45" Binding="{Binding Name}"  IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="Cnt" Width="34" Binding="{Binding Name}"  IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Cnt" Width="34" Binding="{Binding Cnt}"  IsReadOnly="True"/>
                                             <DataGridTextColumn Header="ID"  Width="34" Binding="{Binding ID}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D1"  Width="34" Binding="{Binding D1}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D2"  Width="34" Binding="{Binding D2}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D3"  Width="34" Binding="{Binding D3}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D4"  Width="34" Binding="{Binding D4}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D5"  Width="34" Binding="{Binding D4}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D6"  Width="34" Binding="{Binding D5}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D7"  Width="34" Binding="{Binding D6}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D8"  Width="34" Binding="{Binding D7}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D1"  Width="34" Binding="{Binding D[0]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D2"  Width="34" Binding="{Binding D[1]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D3"  Width="34" Binding="{Binding D[2]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D4"  Width="34" Binding="{Binding D[3]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D5"  Width="34" Binding="{Binding D[4]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D6"  Width="34" Binding="{Binding D[5]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D7"  Width="34" Binding="{Binding D[6]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D8"  Width="34" Binding="{Binding D[7]}" IsReadOnly="True"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </GroupBox>
@@ -283,8 +283,7 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="450"/>
-                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="640"/>
                                 </Grid.ColumnDefinitions>
 
                                 <Button x:Name="buttonFile" Padding="2" Content="Файл" Command="{Binding ReadFileCommand}" Grid.Column="0" Margin="15,15,15,15" IsEnabled="{Binding EnableAction}"/>

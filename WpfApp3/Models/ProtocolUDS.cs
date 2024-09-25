@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using SFC.ViewModels;
+using System.Windows;
 
 
 namespace SFC.Models
@@ -221,8 +222,8 @@ namespace SFC.Models
                             FragmentCounter++;
                             LoadFaultCnt = 0;
 
-                            if (FragmentCounter+1 == Hex.getFragmentsNumb())
-                            {
+                        if (FragmentCounter == Hex.getFragmentsNumb())
+                        {
                                 Loaded_f = true;
                                 StopLoading();
                                 Parent.VM.ConsoleContent +="Загрузка завершена\r";
@@ -296,7 +297,7 @@ namespace SFC.Models
                     return;
                 }
 
-                if (LoadFaultCnt>50)
+                if (LoadFaultCnt>20)
                 {
                     StopProcessLoading();
                     Parent.VM.EnableAction = true;
@@ -391,9 +392,14 @@ namespace SFC.Models
                     WaitFlowControl_f = true;
 
                     CodeFragment = Hex.getFragmentData(FragmentCounter);
+                    if (CodeFragment == null) return;
 
                     ushort size = (ushort)Hex.getFragmentSize(FragmentCounter);
-                    PacketNum = (ushort)((size-4)/7);
+
+                    if((size-4)%7 == 0)
+                        PacketNum = (ushort)((size-4)/7);
+                    else
+                        PacketNum = (ushort)(((size-4)/7)+1);
                     TxData[0] = (byte)(0x10+((size & 0xF00)>>8));
                     TxData[1] = (byte)(size & 0xFF);
                     TxData[2] = 0x36;
@@ -458,7 +464,7 @@ namespace SFC.Models
 
             Parent.Adapter.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
-            Thread.Sleep(DELAY_ATTEMPTING);
+            Thread.Sleep(2*DELAY_ATTEMPTING);
         }
 
         private void RunMainApplication()

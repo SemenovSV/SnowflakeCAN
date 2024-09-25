@@ -171,7 +171,7 @@ namespace SFC
 
             uint CRC = 0xffff;
             len = 0;
-            byte Bt = 0xff;
+            byte Bt = 0xFF;
             for (int N = 0; N < fragments.Count; N++)
             {
                 CodeFragment fragment = fragments[N];

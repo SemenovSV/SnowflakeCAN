@@ -36,6 +36,7 @@ namespace SFC.Models
         {
             if (Adapter.ProcessPacket_f)
             {
+                VM.AddMessageToTerminal(Adapter.Id, Adapter.RxData);
                 Adapter.ProcessPacket_f = false;
                 if (Adapter.Id == "18FE6D44")//HTR_STATUS
                 {
@@ -64,62 +65,6 @@ namespace SFC.Models
                 else if(Adapter.Id == "18DAF144")//UDS
                 {
                     UDS.ParseMessage(Adapter.RxData);
-                    if (Adapter.RxData[1] == 0x22+0x40)
-                    {
-                        if (Adapter.RxData[2] == 0x44)
-                        {
-                            /*if (Adapter.RxData[3]==1)//stage/mode
-                            {
-                                VM.ParamsUDS[0].Value = Convert.ToString(Adapter.RxData[4]);
-                                VM.ParamsUDS[1].Value = Convert.ToString(Adapter.RxData[5]);
-                                VM.SetFooterState(Adapter.RxData[4], Adapter.RxData[5], 255);
-                            }
-                            else if (Adapter.RxData[3]==3)//work time
-                            {
-                                VM.ParamsUDS[2].Value = Convert.ToString(((Adapter.RxData[4]<<8)+Adapter.RxData[5])*60+Adapter.RxData[6]);
-                            }
-                            else if (Adapter.RxData[3]==4)//mode time
-                            {
-                                VM.ParamsUDS[3].Value = Convert.ToString((Adapter.RxData[4]<<8)+Adapter.RxData[5]);
-                            }
-                            else if (Adapter.RxData[3]==5)//voltage
-                            {
-                                VM.ParamsUDS[4].Value = Convert.ToString(((Adapter.RxData[4]<<8)+Adapter.RxData[5])/10.0);
-                            }
-                            else if (Adapter.RxData[3]==15)//rev defined
-                            {
-                                VM.ParamsUDS[5].Value = Convert.ToString(Adapter.RxData[4]);
-                            }
-                            else if (Adapter.RxData[3]==16)//rev measured
-                            {
-                                VM.ParamsUDS[6].Value = Convert.ToString(Adapter.RxData[4]);
-                            }
-                            else if (Adapter.RxData[3]==41)// T overheat
-                            {
-                                VM.ParamsUDS[7].Value = Convert.ToString(Adapter.RxData[4]-40);
-                            }
-                            else if (Adapter.RxData[3]==77)//spark plug
-                            {
-                                VM.ParamsUDS[8].Value = Convert.ToString(Adapter.RxData[4]);
-                            }
-                            else if (Adapter.RxData[3]==78)//fuel valve
-                            {
-                                VM.ParamsUDS[9].Value = Convert.ToString(Adapter.RxData[4]);
-                            }
-                            else if (Adapter.RxData[3]==79)//injector heater
-                            {
-                                VM.ParamsUDS[10].Value = Convert.ToString(Adapter.RxData[4]);
-                            }
-                            else if (Adapter.RxData[3]==83)//photodiode
-                            {
-                                VM.ParamsUDS[11].Value = Convert.ToString((Adapter.RxData[4]<<8)+Adapter.RxData[5]);
-                            }
-                            else if (Adapter.RxData[3]==84)//water pump
-                            {
-                                VM.ParamsUDS[12].Value = Convert.ToString(Adapter.RxData[4]);
-                            }*/
-                        }
-                    }
                 }
             }
         }
