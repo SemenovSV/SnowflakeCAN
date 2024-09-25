@@ -168,7 +168,7 @@ namespace SFC.ViewModels
             if (FilePath != null && FilePath.Length > 0)
             {
                 Protocol.UDS.Hex.LoadHexFile(FilePath);
-                Protocol.UDS.Hex.insertCRC16(false);
+                Protocol.UDS.Hex.insertCRC16();
                 ConsoleContent += "Версия выбранной прошивки: ";
                 ConsoleContent += Protocol.UDS.Hex.Version[0] + "." + Protocol.UDS.Hex.Version[1] + "." + Protocol.UDS.Hex.Version[2] + "." + Protocol.UDS.Hex.Version[3] + "\r";
                 ConsoleContent += "Дата создания: ";

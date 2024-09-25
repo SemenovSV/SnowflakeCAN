@@ -164,30 +164,11 @@ namespace SFC
             }
         }
         //-------------------
-        public void insertCRC16(bool oldMethod)
+        public void insertCRC16()
         {
-            int CRCindx = 0;
-            bool ret_f = false;
             int len = 0;
             int CRCfragmentNumb = 0;
-            for (int N = 0; N < fragments.Count; N++)
-            {
-                CodeFragment fragment = fragments[N];
-                for (int i = 0; i < fragment.Length; i = i + 4)
-                {               
-                    uint word = (uint)((uint)fragment.Data[i] << 0) + ((uint)fragment.Data[i + 1] << 8) + ((uint)fragment.Data[i + 2] << 16) + ((uint)fragment.Data[i + 3] << 24);
-                    if ((word == 0x55555555) || (fragment.StartAdress == 0x0801c000))
-                    {
-                        CRCfragmentNumb = N;
-                        CRCindx = i;
-                        ret_f = true;
-                        break;
-                    }
 
-                }
-                if (ret_f) break;
-            }
-            if (!ret_f) return;
             uint CRC = 0xffff;
             len = 0;
             byte Bt = 0xff;
@@ -196,26 +177,27 @@ namespace SFC
                 CodeFragment fragment = fragments[N];
                 for (int i = 0; i < fragment.Length; i++)
                 {
-                    Bt = fragment.Data[i];
-                    if (oldMethod)
+                    if (fragment.StartAdress == 0x0801C000 && i >= 0  && i <= 5)
                     {
-                        if ((N >= CRCfragmentNumb) && (i >= CRCindx)) Bt = 0xff;
+                        if (CRCfragmentNumb == 0) CRCfragmentNumb = N;
+                        Bt = 0xFF;
                     }
                     else
                     {
-                        if ((N == CRCfragmentNumb) && (i >= CRCindx) && (i < (CRCindx + 6))) Bt = 0xff;
+                        Bt = fragment.Data[i];
                     }
+
                     calcCrc(ref CRC, Bt);
                     len++;
                 }
 
             }
-            fragments[CRCfragmentNumb].Data[CRCindx + 0] = (byte)((len >> 0) & 0xff);
-            fragments[CRCfragmentNumb].Data[CRCindx + 1] = (byte)((len >> 8) & 0xff);
-            fragments[CRCfragmentNumb].Data[CRCindx + 2] = (byte)((len >> 16) & 0xff);
-            fragments[CRCfragmentNumb].Data[CRCindx + 3] = (byte)((len >> 24) & 0xff);
-            fragments[CRCfragmentNumb].Data[CRCindx + 4] = (byte)((CRC >> 0) & 0xff);
-            fragments[CRCfragmentNumb].Data[CRCindx + 5] = (byte)((CRC >> 8) & 0xff);
+            fragments[CRCfragmentNumb].Data[0] = (byte)((len >> 0) & 0xff);
+            fragments[CRCfragmentNumb].Data[1] = (byte)((len >> 8) & 0xff);
+            fragments[CRCfragmentNumb].Data[2] = (byte)((len >> 16) & 0xff);
+            fragments[CRCfragmentNumb].Data[3] = (byte)((len >> 24) & 0xff);
+            fragments[CRCfragmentNumb].Data[4] = (byte)((CRC >> 0) & 0xff);
+            fragments[CRCfragmentNumb].Data[5] = (byte)((CRC >> 8) & 0xff);
         }
         //-------------------------------------------
         private void calcCrc(ref uint CRC, byte val)
