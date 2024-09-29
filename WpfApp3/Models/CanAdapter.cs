@@ -35,7 +35,7 @@ namespace SFC.Models
 
                 MessageIn[MessageCnt++] = Port.Buf[Port.ReadPtr];
 
-                if (Port.Buf[Port.ReadPtr] is 7 or 13) //end of packet
+                if (Port.Buf[Port.ReadPtr] is 7 or 13 or 0) //end of packet
                 {
                     ParseMessage();
                     MessageCnt = 0;
@@ -52,8 +52,6 @@ namespace SFC.Models
             if(MessageIn[0] == 'T')
             {
                 Id = message.Substring(1, 8);
-                
-                byte length = (byte)(Convert.ToByte(MessageIn[9])-48);
 
                 for (int i = 0; i<8; i++)
                 {

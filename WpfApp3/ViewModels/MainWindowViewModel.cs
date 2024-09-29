@@ -145,9 +145,6 @@ namespace SFC.ViewModels
         {
             Protocol.Adapter.Port.Recieve();
             Protocol.Adapter.ReadBuffer();
-
-
-
             Protocol.ParseMessage();
         }
         #endregion
@@ -483,6 +480,9 @@ namespace SFC.ViewModels
                         break;
                     case 4:
                         FooterState += "датчик температуры";
+                        break;
+                    case 8:
+                        FooterState += "срывы пламени в работе";
                         break;
                     case 13:
                         FooterState += "нерозжиг";
