@@ -141,12 +141,12 @@ namespace SFC.ViewModels
             return true;
         }
 
-        public void DataReceivedHandler(object sender, SerialDataReceivedEventArgs args)
+        /*public void DataReceivedHandler(object sender, SerialDataReceivedEventArgs args)
         {
             Protocol.Adapter.Port.Recieve();
             Protocol.Adapter.ReadBuffer();
             Protocol.ParseMessage();
-        }
+        }*/
         #endregion
 
         #region FilePath
@@ -572,7 +572,6 @@ namespace SFC.ViewModels
         {
             Protocol = new J1939_GAZ(this);
 
-            Protocol.Adapter.Port.ComPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler); // Add DataReceived Event Handler
             OpenPortCommand = new LambdaCommand(OnOpenPortCommandExecuted, CanOpenPortCommandExecute);
             SetBaudrateCommand = new LambdaCommand(OnSetBaudrateCommandExecuted, CanSetBaudrateCommandExecute);
             ReadFileCommand = new LambdaCommand(OnReadFileCommandExecuted, CanReadFileCommandExecute);

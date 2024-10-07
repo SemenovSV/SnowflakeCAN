@@ -33,7 +33,7 @@ namespace SFC
         {
             InitializeComponent();
 
-            DataContext = new MainWindowViewModel();
+            //DataContext = new MainWindowViewModel();
 
             //StreamWriter logWriter = new StreamWriter("log.txt", false);
 

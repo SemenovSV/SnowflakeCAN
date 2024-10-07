@@ -14,6 +14,8 @@ namespace SFC.Models
     {
         public ComPortModel Port = new ComPortModel();
 
+        private J1939_GAZ Parent;//ToDo Возможно получится избавиться от связи
+
         public byte[] MessageIn = new byte[MessageMaxLength];
         public byte[] MessageOut = new byte[11];
 
@@ -22,11 +24,24 @@ namespace SFC.Models
 
         private bool SuccessTransmission_f = false;
 
+        public CanAdapter(J1939_GAZ parent)
+        {
+            Port.ComPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler); // Add DataReceived Event Handler
+            Parent=parent;
+        }
+
 
         public string Id = "";
         public byte[] RxData = new byte[8];
         public bool ProcessPacket_f = false;
 
+
+        public void DataReceivedHandler(object sender, SerialDataReceivedEventArgs args)
+        {
+            Port.Recieve();
+            ReadBuffer();
+            Parent.ParseMessage();
+        }
 
         public void ReadBuffer()
         {

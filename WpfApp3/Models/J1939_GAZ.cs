@@ -15,7 +15,7 @@ namespace SFC.Models
 {
     public class J1939_GAZ
     {
-        public CanAdapter Adapter = new CanAdapter();
+        public CanAdapter Adapter;
 
         public MainWindowViewModel VM;
 
@@ -29,6 +29,7 @@ namespace SFC.Models
         {
             VM = parent;
             UDS = new ProtocolUDS(this);
+            Adapter = new CanAdapter(this);
             Adapter.Port.ComPort.BaudRate = VM.BaudrateList[VM.BaudrateIndex];
         }
 
