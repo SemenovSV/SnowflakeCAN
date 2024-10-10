@@ -1,6 +1,7 @@
 ﻿using SFC.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -97,7 +98,7 @@ namespace SFC.Models
                 TxData[6] = (byte)(VM.WorkTime/10);
                 TxData[7] = 0xFF;
 
-                Adapter.SendMessage("18FE6D3A", TxData);
+                SendMessage("18FE6D3A", TxData);
             }
         }
 
@@ -130,7 +131,7 @@ namespace SFC.Models
                 TxData[6] = 0xFF;
                 TxData[7] = 0xFF;
 
-                Adapter.SendMessage("18DA44F1", TxData);
+                SendMessage("18DA44F1", TxData);
 
                 if (i<UDSReqList.Length-1) i++;
                 else i = 0;
@@ -166,6 +167,12 @@ namespace SFC.Models
             }
             else code = (uint)_spnfmi;
             return code;
+        }
+
+        public void SendMessage(string _id, byte[] _data)
+        { 
+            Adapter.SendMessage(_id, _data);
+            VM.AddMessageToTxTerminal(_id, _data);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,15 @@ namespace SFC.Models
 {
     public class Message : ObservableObject
     {
+        public Message()
+        {
+            _ID = "";
+            _Name = "";
+            for (var item = 0; item<8; item++)
+            {
+                _D[item] = 255;
+            }
+        }
         public Message(string _name)
         {
             _Name = _name;

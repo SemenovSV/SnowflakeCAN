@@ -558,10 +558,15 @@ namespace SFC.ViewModels
         {
             switch (id)
             {
+                case "18FE6D3A":
                 case "18FE6D44": return "HTR";
+                case "18FE44F7":
                 case "18FEF744": return "VEP";
+                case "18FE44F9":
                 case "18FEF944": return "SOFT";
+                case "18FE44CA":
                 case "18FECA44": return "DM1";
+                case "18DA44F1":
                 case "18DAF144": return "UDS";
             }
             return "";
@@ -569,13 +574,65 @@ namespace SFC.ViewModels
 
         public void AddMessageToTxTerminal(string id, byte[] data)
         {
-
+            Message mes = new Message(id, data, GetMessageName(id));
+            foreach (Message _mes in MessagesTX)
+            {
+                if (_mes.ID == id)
+                {
+                    _mes.Cnt++;
+                    return;
+                }
+                
+            }
+            uiContext.Send(x => MessagesTX.Add(mes), null);
         }
-
 
         private string _MessageLog = "";
         public string MessageLog
         { set => Set(ref _MessageLog, value); get => _MessageLog; }
+
+        public ICommand AddRowCommand { get; }
+        private void OnAddRowCommandExecuted(object parameter)
+        {
+            Message _mes = new Message();
+            ManualMessages.Add(_mes);
+        }
+        private bool CanAddRowCommandExecute(object parameter)
+        {
+            return true;
+        }
+
+        public ICommand RemoveRowCommand { get; }
+        private void OnRemoveRowCommandExecuted(object parameter)
+        {
+            ManualMessages.Remove(SelectedMessage);
+        }
+        private bool CanRemoveRowCommandExecute(object parameter)
+        {
+            return true;
+        }
+
+        public ICommand SendRowMessageCommand { get; }
+        private void OnSendRowMessageCommandExecuted(object parameter)
+        {
+            try
+            {
+                Protocol.SendMessage(SelectedMessage.ID, SelectedMessage.D);
+            }
+            catch (Exception ex) { };
+        }
+        private bool CanSendRowMessageCommandExecute(object parameter)
+        {
+            return true;
+        }
+
+        private ObservableCollection<Message> _ManualMessages = new ObservableCollection<Message>() { };
+        public ObservableCollection<Message> ManualMessages
+        { set => Set(ref _ManualMessages, value); get => _ManualMessages; }
+
+        private Message _SelectedMessage;
+        public Message SelectedMessage
+        { set => Set(ref _SelectedMessage, value); get => _SelectedMessage; }
         #endregion
 
         public MainWindowViewModel()
@@ -589,6 +646,9 @@ namespace SFC.ViewModels
             LoadFirmwareCommand = new LambdaCommand(OnLoadFirmwareCommandExecuted, CanLoadFirmwareCommandExecute);
             RegularReqHTRCommand = new LambdaCommand(OnRegularReqHTRCommandExecuted, CanRegularReqHTRCommandExecute);
             RegularReqUDSCommand = new LambdaCommand(OnRegularReqUDSCommandExecuted, CanRegularReqUDSCommandExecute);
+            AddRowCommand = new LambdaCommand(OnAddRowCommandExecuted, CanAddRowCommandExecute);
+            RemoveRowCommand = new LambdaCommand(OnRemoveRowCommandExecuted, CanRemoveRowCommandExecute);
+            SendRowMessageCommand = new LambdaCommand(OnSendRowMessageCommandExecuted, CanSendRowMessageCommandExecute);
 
             Protocol.UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
             Protocol.UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);

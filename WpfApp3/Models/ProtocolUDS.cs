@@ -201,7 +201,7 @@ namespace SFC.Models
                         TxData[5] = (byte)((countKey>>8) & 0xFF);
                         TxData[6] = (byte)((countKey) & 0xFF);
                         TxData[7] = 0xFF;
-                        Parent.Adapter.SendMessage(IdTxUDS, TxData);
+                        Parent.SendMessage(IdTxUDS, TxData);
                     }
                     else if(message[2] == 8)//резутьтат Key-verification положительный
                     {
@@ -323,7 +323,7 @@ namespace SFC.Models
                 TxData[5]=0xFF;
                 TxData[6]=0xFF;
                 TxData[7]=0xFF;
-                Parent.Adapter.SendMessage(IdTxUDS, TxData);
+                Parent.SendMessage(IdTxUDS, TxData);
                 LoadFaultCnt++;
             }
             Thread.Sleep(DELAY_ATTEMPTING);
@@ -339,7 +339,7 @@ namespace SFC.Models
             TxData[5]=0xFF;
             TxData[6]=0xFF;
             TxData[7]=0xFF;
-            Parent.Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
 
             Thread.Sleep(DELAY_ATTEMPTING);
@@ -356,7 +356,7 @@ namespace SFC.Models
             TxData[5]=0xFF;
             TxData[6]=0xFF;
             TxData[7]=0xFF;
-            Parent.Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
 
             Thread.Sleep(DELAY_ATTEMPTING);
@@ -376,7 +376,7 @@ namespace SFC.Models
             TxData[5]=(byte)((start_addr)&0xFF);
             TxData[6]=0xFF;
             TxData[7]=0xFF;
-            Parent.Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
 
             Thread.Sleep(DELAY_ATTEMPTING);
@@ -425,7 +425,7 @@ namespace SFC.Models
                         PacketCounter = 0;
                     }
                 }
-                Parent.Adapter.SendMessage(IdTxUDS, TxData);
+                Parent.SendMessage(IdTxUDS, TxData);
             }
             else
             {
@@ -445,7 +445,7 @@ namespace SFC.Models
             TxData[6]=0xFF;
             TxData[7]=0xFF;
 
-            Parent.Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
         }
 
@@ -462,7 +462,7 @@ namespace SFC.Models
             TxData[6]=0xFF;
             TxData[7]=0xFF;
 
-            Parent.Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
             Thread.Sleep(2*DELAY_ATTEMPTING);
         }
@@ -478,7 +478,7 @@ namespace SFC.Models
             TxData[6]=0xFF;
             TxData[7]=0xFF;
 
-            Parent.Adapter.SendMessage(IdTxUDS, TxData);
+            Parent.SendMessage(IdTxUDS, TxData);
             LoadFaultCnt++;
             Thread.Sleep(DELAY_ATTEMPTING);
         }
