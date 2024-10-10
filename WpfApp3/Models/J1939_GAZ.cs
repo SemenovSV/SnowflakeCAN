@@ -35,41 +35,37 @@ namespace SFC.Models
 
         public void ParseMessage()
         {
-            //if (Adapter.ProcessPacket_f)
-            //{
-                
-                VM.AddMessageToRxTerminal(Adapter.Id, Adapter.RxData);
-                VM.MessageLog+=DateTime.Now.ToString("HH:mm:ss:fff")+"   >> "+Adapter.Id +" |   "+Convert.ToHexString(Adapter.RxData)+"\r";
-                Adapter.ProcessPacket_f = false;
-                if (Adapter.Id == "18FE6D44")//HTR_STATUS
-                {
-                    if(VM.ParamsJ1939[0].Value!=null) VM.ParamsJ1939[0].Value = Convert.ToString(Adapter.RxData[0]-40);
-                    VM.ParamsJ1939[1].Value = Convert.ToString(Adapter.RxData[2]);
-                    VM.ParamsJ1939[2].Value = Convert.ToString(Adapter.RxData[3]);
-                    VM.ParamsJ1939[3].Value = Convert.ToString((Adapter.RxData[6]<<8)+Adapter.RxData[7]);
-                }
-                else if(Adapter.Id == "18FEF744")//VEP
-                {
-                    VM.ParamsVEP[0].Value = Convert.ToString((Adapter.RxData[4]+(Adapter.RxData[5]<<8))/20.0);
-                }
-                else if(Adapter.Id == "18FEF944")//SOFT
-                {
+            VM.AddMessageToRxTerminal(Adapter.Id, Adapter.RxData);
+            VM.MessageLog+=DateTime.Now.ToString("HH:mm:ss:fff")+"   >> "+Adapter.Id +" |   "+Convert.ToHexString(Adapter.RxData)+"\r";
+            Adapter.ProcessPacket_f = false;
+            if (Adapter.Id == "18FE6D44")//HTR_STATUS
+            {
+                if(VM.ParamsJ1939[0].Value!=null) VM.ParamsJ1939[0].Value = Convert.ToString(Adapter.RxData[0]-40);
+                VM.ParamsJ1939[1].Value = Convert.ToString(Adapter.RxData[2]);
+                VM.ParamsJ1939[2].Value = Convert.ToString(Adapter.RxData[3]);
+                VM.ParamsJ1939[3].Value = Convert.ToString((Adapter.RxData[6]<<8)+Adapter.RxData[7]);
+            }
+            else if(Adapter.Id == "18FEF744")//VEP
+            {
+                VM.ParamsVEP[0].Value = Convert.ToString((Adapter.RxData[4]+(Adapter.RxData[5]<<8))/20.0);
+            }
+            else if(Adapter.Id == "18FEF944")//SOFT
+            {
 
-                }
-                else if (Adapter.Id == "18FECA44")//DM1
-                {
-                    VM.ParamsDM1[0].Value = Convert.ToString(Adapter.RxData[0]);
-                    VM.ParamsDM1[1].Value = Convert.ToString(Adapter.RxData[2]+(Adapter.RxData[3]<<8));
-                    VM.ParamsDM1[2].Value = Convert.ToString(Adapter.RxData[4]);
-                    VM.ParamsDM1[3].Value = Convert.ToString(Adapter.RxData[5]);
+            }
+            else if (Adapter.Id == "18FECA44")//DM1
+            {
+                VM.ParamsDM1[0].Value = Convert.ToString(Adapter.RxData[0]);
+                VM.ParamsDM1[1].Value = Convert.ToString(Adapter.RxData[2]+(Adapter.RxData[3]<<8));
+                VM.ParamsDM1[2].Value = Convert.ToString(Adapter.RxData[4]);
+                VM.ParamsDM1[3].Value = Convert.ToString(Adapter.RxData[5]);
 
-                    VM.SetFooterState(255, 255, GetFaultCode((Adapter.RxData[4]<<19)+Adapter.RxData[2]+(Adapter.RxData[3]<<8)));
-                }
-                else if(Adapter.Id == "18DAF144")//UDS
-                {
-                    UDS.ParseMessage(Adapter.RxData);
-                }
-            //}
+                VM.SetFooterState(255, 255, GetFaultCode((Adapter.RxData[4]<<19)+Adapter.RxData[2]+(Adapter.RxData[3]<<8)));
+            }
+            else if(Adapter.Id == "18DAF144")//UDS
+            {
+                UDS.ParseMessage(Adapter.RxData);
+            }
         }
 
 
@@ -124,7 +120,7 @@ namespace SFC.Models
             while (true)
             {
                 if (VM.RegularReqUDS == false) return;
-                Thread.Sleep(10);
+                Thread.Sleep(80);
                 TxData[0] = 3;
                 TxData[1] = 0x22;
                 TxData[2] = 0x44;

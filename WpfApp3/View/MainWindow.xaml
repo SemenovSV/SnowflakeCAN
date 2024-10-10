@@ -251,9 +251,9 @@
                             </Grid>
                         </StackPanel>
                         <StackPanel Grid.Row="2">
-                            <ScrollViewer MaxHeight="150" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <!--<ScrollViewer MaxHeight="150" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">-->
                                 <TextBlock Text="{Binding MessageLog}"/>
-                            </ScrollViewer>
+                            <!--</ScrollViewer>-->
                         </StackPanel>
                     </Grid>
                 </StackPanel>

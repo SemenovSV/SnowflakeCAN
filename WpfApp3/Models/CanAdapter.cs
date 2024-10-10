@@ -43,31 +43,11 @@ namespace SFC.Models
                 string existing = Port.ComPort.ReadExisting();
                 ParseMessage(existing);
             }
-            //ReadBuffer();
-            //Parent.ParseMessage();
         }
-
-        /*public void ReadBuffer()
-        {
-            while (Port.ReadPtr!=Port.WritePtr)
-            {
-
-                MessageIn[MessageCnt++] = Port.Buf[Port.ReadPtr];
-
-                if (Port.Buf[Port.ReadPtr] is 7 or 13 or 0) //end of packet
-                {
-                    ParseMessage();
-                    MessageCnt = 0;
-                }
-                if(Port.Buf[Port.ReadPtr] == 0) MessageCnt = 0;
-
-                if (++Port.ReadPtr>=ComPortModel.BufSize) Port.ReadPtr = 0;
-            }
-        }*/
 
         public void ParseMessage(string _mes)
         {
-            string message = _mes;//Encoding.Default.GetString(MessageIn);
+            string message = _mes;
             for(int  j = 0; j<message.Length; j++)
             {
                 if (message[j] == 'T' && message[j+26] =='\r')
@@ -117,7 +97,7 @@ namespace SFC.Models
             }
             catch (Exception)
             {
-
+                //ToDo
             }
         }
         public void GetVersionAPI()

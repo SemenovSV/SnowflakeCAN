@@ -548,7 +548,7 @@ namespace SFC.ViewModels
             {
                 if(_mes.ID == id)
                 {
-                    //ToDo
+                    _mes.Cnt++;
                     return;
                 }
             }
@@ -558,13 +558,18 @@ namespace SFC.ViewModels
         {
             switch (id)
             {
-                case "18FE6D44": return "HTR_STATUS";
+                case "18FE6D44": return "HTR";
                 case "18FEF744": return "VEP";
                 case "18FEF944": return "SOFT";
                 case "18FECA44": return "DM1";
                 case "18DAF144": return "UDS";
             }
             return "";
+        }
+
+        public void AddMessageToTxTerminal(string id, byte[] data)
+        {
+
         }
 
 
