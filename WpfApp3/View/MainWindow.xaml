@@ -166,9 +166,9 @@
                 <StackPanel>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="230"/>
-                            <RowDefinition Height="280"/>
-                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="150"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0">
                             <Grid>
@@ -250,6 +250,11 @@
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
+                        <StackPanel Grid.Row="2">
+                            <ScrollViewer MaxHeight="150" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <TextBlock Text="{Binding MessageLog}"/>
+                            </ScrollViewer>
+                        </StackPanel>
                     </Grid>
                 </StackPanel>
             </TabItem>
@@ -296,7 +301,10 @@
                         </StackPanel>
                         <Button x:Name="buttonLoad" Padding="2" Content="{Binding LoadFirmwareContent}" Command="{Binding LoadFirmwareCommand}" Grid.Row="1" Grid.Column="0" Margin="15,14,15,14" IsEnabled="{Binding EnableAction}" Grid.ColumnSpan="4"/>
                         <Border Grid.Row="2" Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Margin="5,5,5,5" Grid.ColumnSpan="4">
-                            <TextBlock Name="textConsole" Text="{Binding ConsoleContent}" Margin="15,0,15,0"></TextBlock>
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <TextBlock Name="textConsole" Text="{Binding ConsoleContent}" Margin="15,0,15,0"/>
+                            </ScrollViewer>
+
                         </Border>
                         <ProgressBar  Grid.Row="3" Grid.Column="0" Value="{Binding LoadProgress}"  Height="10" Margin="15,5,15,5" Grid.ColumnSpan="4"/>
                         <StackPanel Grid.Row="4" Grid.ColumnSpan="4">

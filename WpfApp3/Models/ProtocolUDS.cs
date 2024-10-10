@@ -106,147 +106,147 @@ namespace SFC.Models
 
         public void ParseMessage(byte[] message)
         {
-                    if ((message[0] & 0xF0) == 0)//single frame
+            if ((message[0] & 0xF0) == 0)//single frame
+            {
+                byte Service = message[1];
+                if (Service == SERVICE_SESSION_CONTROL+0x40)
+                {
+                    if(message[2] == SESSION_PROGRAMMING)
                     {
-                        byte Service = message[1];
-                        if (Service == SERVICE_SESSION_CONTROL+0x40)
-                        {
-                            if(message[2] == SESSION_PROGRAMMING)
-                            {
-                                Parent.VM.ConsoleContent +="Переход на сессию программирования осуществлён\r";
-                                SwitchedToSession_f = true;
-                                LoadFaultCnt = 0;
-                            }
-                        }
-                        else if (Service == SERVICE_ECU_RESET+0x40)
-                        {
-                            if(message[2] == 1)
-                            {
-                                Parent.VM.ConsoleContent +="Переход в загрузчик осуществлён\r";
-                                SwitchedToBoot_f = true;
-                                LoadFaultCnt = 0;
-                            }
-                            else if(message[2] == 2)
-                            {
-                                Parent.VM.ConsoleContent +="Обновление ПО успешно завершено\r";
-                                RunnedMainApplication_f = true;
-                                LoadFaultCnt = 0;
-                            }
-                        }
-                        else if (Service == SERVICE_READ_DATA_BY_ID+0x40)
-                        {
-                            if (message[3]==1)//stage/mode
-                            {
-                                Parent.VM.ParamsUDS[0].Value = Convert.ToString(message[4]);
-                                Parent.VM.ParamsUDS[1].Value = Convert.ToString(message[5]);
-                                Parent.VM.SetFooterState(message[4], message[5], 255);
-                            }
-                            else if (message[3]==3)//work time
-                            {
-                                Parent.VM.ParamsUDS[2].Value = Convert.ToString(((message[4]<<8)+message[5])*60+message[6]);
-                            }
-                            else if (message[3]==4)//mode time
-                            {
-                                Parent.VM.ParamsUDS[3].Value = Convert.ToString((message[4]<<8)+message[5]);
-                            }
-                            else if (message[3]==15)//rev defined
-                            {
-                                Parent.VM.ParamsUDS[4].Value = Convert.ToString(message[4]);
-                            }
-                            else if (message[3]==16)//rev measured
-                            {
-                                Parent.VM.ParamsUDS[5].Value = Convert.ToString(message[4]);
-                            }
-                            else if (message[3]==41)// T overheat
-                            {
-                                Parent.VM.ParamsUDS[6].Value = Convert.ToString(message[4]-40);
-                            }
-                            else if (message[3]==77)//spark plug
-                            {
-                                Parent.VM.ParamsUDS[7].Value = Convert.ToString(message[4]);
-                            }
-                            else if (message[3]==78)//fuel valve
-                            {
-                                Parent.VM.ParamsUDS[8].Value = Convert.ToString(message[4]);
-                            }
-                            else if (message[3]==79)//injector heater
-                            {
-                                Parent.VM.ParamsUDS[9].Value = Convert.ToString(message[4]);
-                            }
-                            else if (message[3]==83)//photodiode
-                            {
-                                Parent.VM.ParamsUDS[10].Value = Convert.ToString((message[4]<<8)+message[5]);
-                            }
-                            else if (message[3]==84)//water pump
-                            {
-                                Parent.VM.ParamsUDS[11].Value = Convert.ToString(message[4]);
-                            }
-                        }
-                        else if (Service == SERVICE_SECURITY_ACCESS+0x40)
-                        {
-                            if(message[2] == 7) //получен Seed
-                            {
-                                GetSeed_f = true;
-                                LoadFaultCnt = 0;
-                                uint seed = (uint)(((message[3] & 0xFF) << 24) + ((message[4] & 0xFF) << 16) + ((message[5] & 0xFF) << 8) + (message[6] & 0xFF));//ToDo
-                                if(seed == 0xFFFFFFFF) Accesed_f = true;
-
-                                uint countKey = (seed + 0x29C) * 0x573B4;
-                                countKey ^= seed;
-                                TxData[0] = 6;
-                                TxData[1] = SERVICE_SECURITY_ACCESS;
-                                TxData[2] = 8;
-                                TxData[3] = (byte)((countKey>>24) & 0xFF);
-                                TxData[4] = (byte)((countKey>>16) & 0xFF);
-                                TxData[5] = (byte)((countKey>>8) & 0xFF);
-                                TxData[6] = (byte)((countKey) & 0xFF);
-                                TxData[7] = 0xFF;
-                                Parent.Adapter.SendMessage(IdTxUDS, TxData);
-                            }
-                            else if(message[2] == 8)//резутьтат Key-verification положительный
-                            {
-                                Parent.VM.ConsoleContent +="Уровень доступа получен\r";
-                                Accesed_f = true;
-                                LoadFaultCnt = 0;
-                            }
-                        }
-                        else if(Service == SERVICE_PROGRAMM_START_ADDRESS+0x40)
-                        {
-                            Parent.VM.ConsoleContent +="Загрузка управляющей программы\r";
-                            StartLoading_f = true;
-                            LoadFaultCnt = 0;
-                        }
-                        else if(Service == SERVICE_PROGRAMM_DATA+0x40)
-                        {
-                            WaitCorrectTransfer_f = false;
-                            FragmentCounter++;
-                            LoadFaultCnt = 0;
-
-                        if (FragmentCounter == Hex.getFragmentsNumb())
-                        {
-                                Loaded_f = true;
-                                StopLoading();
-                                Parent.VM.ConsoleContent +="Загрузка завершена\r";
-                            }
-                            LoadProgress?.Report((ushort)(100*(FragmentCounter+1)/Hex.getFragmentsNumb()));
-                            LoadTimeS?.Report((uint)LoadTime.ElapsedMilliseconds/1000);
-                        }
-                        else if (Service == SERVICE_ROUTINE_CONTROL+0x40)
-                        {
-                            if (message[2] == 1)//check CRC
-                            {
-                                Parent.VM.ConsoleContent +="Контрольная сумма проверена\r";
-                                CheckedCrc_f = true;
-                                LoadFaultCnt = 0;
-                                LoadTime.Stop();
-                            }
-                        }
-                    }
-                    else if(message[0] == 0x30)//FlowControl
-                    {
+                        Parent.VM.ConsoleContent +="Переход на сессию программирования осуществлён\r";
+                        SwitchedToSession_f = true;
                         LoadFaultCnt = 0;
-                        WaitFlowControl_f = false;
                     }
+                }
+                else if (Service == SERVICE_ECU_RESET+0x40)
+                {
+                    if(message[2] == 1)
+                    {
+                        Parent.VM.ConsoleContent +="Переход в загрузчик осуществлён\r";
+                        SwitchedToBoot_f = true;
+                        LoadFaultCnt = 0;
+                    }
+                    else if(message[2] == 2)
+                    {
+                        Parent.VM.ConsoleContent +="Обновление ПО успешно завершено\r";
+                        RunnedMainApplication_f = true;
+                        LoadFaultCnt = 0;
+                    }
+                }
+                else if (Service == SERVICE_READ_DATA_BY_ID+0x40)
+                {
+                    if (message[3]==1)//stage/mode
+                    {
+                        Parent.VM.ParamsUDS[0].Value = Convert.ToString(message[4]);
+                        Parent.VM.ParamsUDS[1].Value = Convert.ToString(message[5]);
+                        Parent.VM.SetFooterState(message[4], message[5], 255);
+                    }
+                    else if (message[3]==3)//work time
+                    {
+                        Parent.VM.ParamsUDS[2].Value = Convert.ToString(((message[4]<<8)+message[5])*60+message[6]);
+                    }
+                    else if (message[3]==4)//mode time
+                    {
+                        Parent.VM.ParamsUDS[3].Value = Convert.ToString((message[4]<<8)+message[5]);
+                    }
+                    else if (message[3]==15)//rev defined
+                    {
+                        Parent.VM.ParamsUDS[4].Value = Convert.ToString(message[4]);
+                    }
+                    else if (message[3]==16)//rev measured
+                    {
+                        Parent.VM.ParamsUDS[5].Value = Convert.ToString(message[4]);
+                    }
+                    else if (message[3]==41)// T overheat
+                    {
+                        Parent.VM.ParamsUDS[6].Value = Convert.ToString(message[4]-40);
+                    }
+                    else if (message[3]==77)//spark plug
+                    {
+                        Parent.VM.ParamsUDS[7].Value = Convert.ToString(message[4]);
+                    }
+                    else if (message[3]==78)//fuel valve
+                    {
+                        Parent.VM.ParamsUDS[8].Value = Convert.ToString(message[4]);
+                    }
+                    else if (message[3]==79)//injector heater
+                    {
+                        Parent.VM.ParamsUDS[9].Value = Convert.ToString(message[4]);
+                    }
+                    else if (message[3]==83)//photodiode
+                    {
+                        Parent.VM.ParamsUDS[10].Value = Convert.ToString((message[4]<<8)+message[5]);
+                    }
+                    else if (message[3]==84)//water pump
+                    {
+                        Parent.VM.ParamsUDS[11].Value = Convert.ToString(message[4]);
+                    }
+                }
+                else if (Service == SERVICE_SECURITY_ACCESS+0x40)
+                {
+                    if(message[2] == 7) //получен Seed
+                    {
+                        GetSeed_f = true;
+                        LoadFaultCnt = 0;
+                        uint seed = (uint)(((message[3] & 0xFF) << 24) + ((message[4] & 0xFF) << 16) + ((message[5] & 0xFF) << 8) + (message[6] & 0xFF));//ToDo
+                        if(seed == 0xFFFFFFFF) Accesed_f = true;
+
+                        uint countKey = (seed + 0x29C) * 0x573B4;
+                        countKey ^= seed;
+                        TxData[0] = 6;
+                        TxData[1] = SERVICE_SECURITY_ACCESS;
+                        TxData[2] = 8;
+                        TxData[3] = (byte)((countKey>>24) & 0xFF);
+                        TxData[4] = (byte)((countKey>>16) & 0xFF);
+                        TxData[5] = (byte)((countKey>>8) & 0xFF);
+                        TxData[6] = (byte)((countKey) & 0xFF);
+                        TxData[7] = 0xFF;
+                        Parent.Adapter.SendMessage(IdTxUDS, TxData);
+                    }
+                    else if(message[2] == 8)//резутьтат Key-verification положительный
+                    {
+                        Parent.VM.ConsoleContent +="Уровень доступа получен\r";
+                        Accesed_f = true;
+                        LoadFaultCnt = 0;
+                    }
+                }
+                else if(Service == SERVICE_PROGRAMM_START_ADDRESS+0x40)
+                {
+                    Parent.VM.ConsoleContent +="Загрузка управляющей программы\r";
+                    StartLoading_f = true;
+                    LoadFaultCnt = 0;
+                }
+                else if(Service == SERVICE_PROGRAMM_DATA+0x40)
+                {
+                    WaitCorrectTransfer_f = false;
+                    FragmentCounter++;
+                    LoadFaultCnt = 0;
+
+                if (FragmentCounter == Hex.getFragmentsNumb())
+                {
+                        Loaded_f = true;
+                        StopLoading();
+                        Parent.VM.ConsoleContent +="Загрузка завершена\r";
+                    }
+                    LoadProgress?.Report((ushort)(100*(FragmentCounter+1)/Hex.getFragmentsNumb()));
+                    LoadTimeS?.Report((uint)LoadTime.ElapsedMilliseconds/1000);
+                }
+                else if (Service == SERVICE_ROUTINE_CONTROL+0x40)
+                {
+                    if (message[2] == 1)//check CRC
+                    {
+                        Parent.VM.ConsoleContent +="Контрольная сумма проверена\r";
+                        CheckedCrc_f = true;
+                        LoadFaultCnt = 0;
+                        LoadTime.Stop();
+                    }
+                }
+            }
+            else if(message[0] == 0x30)//FlowControl
+            {
+                LoadFaultCnt = 0;
+                WaitFlowControl_f = false;
+            }
         }
 
         public Thread StartPricessLoading()

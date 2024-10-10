@@ -32,16 +32,18 @@ namespace SFC.Models
             ComPort.DataBits = 8;
         }
 
-        public void Recieve()
+        /*public void Receive()
         {
-            while (ComPort.BytesToRead>0)
+            while (ComPort.BytesToRead>0 && ComPort.IsOpen)
             {
-                Buf[WritePtr++] = RecvUInt8(ComPort);//write to circular buffer
+                //Buf[WritePtr++]
+                    string existing = ComPort.ReadExisting();//write to circular buffer
                 if (WritePtr>=BufSize) WritePtr = 0;
+                int a = GetThreadPoolThreadsInUse();
             }
-        }
+        }*/
 
-        private byte RecvUInt8(SerialPort serial)
+        /*private byte RecvUInt8(SerialPort serial)
         {
             byte[] rxbuffer = new byte[1];
             int got = 0;
@@ -49,6 +51,16 @@ namespace SFC.Models
                 got += serial.Read(rxbuffer, got, rxbuffer.Length - got);
 
             return rxbuffer[0];
+        }*/
+
+        public int GetThreadPoolThreadsInUse()
+        {
+            int max, max2;
+            ThreadPool.GetMaxThreads(out max, out max2);
+            int available, available2;
+            ThreadPool.GetAvailableThreads(out available, out available2);
+            int running = max - available;
+            return running;
         }
     }
 }

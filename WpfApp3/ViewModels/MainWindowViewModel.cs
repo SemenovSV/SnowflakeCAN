@@ -541,7 +541,7 @@ namespace SFC.ViewModels
         public ObservableCollection<Message> MessagesTX
         { set => Set(ref _MessagesTX, value); get => _MessagesTX; }
 
-        public void AddMessageToTerminal(string id, byte[] data)
+        public void AddMessageToRxTerminal(string id, byte[] data)
         {
             Message mes = new Message(id, data, GetMessageName(id));
             foreach(Message _mes in MessagesRX)
@@ -566,6 +566,11 @@ namespace SFC.ViewModels
             }
             return "";
         }
+
+
+        private string _MessageLog = "";
+        public string MessageLog
+        { set => Set(ref _MessageLog, value); get => _MessageLog; }
         #endregion
 
         public MainWindowViewModel()

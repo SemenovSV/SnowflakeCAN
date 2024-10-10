@@ -35,9 +35,11 @@ namespace SFC.Models
 
         public void ParseMessage()
         {
-            if (Adapter.ProcessPacket_f)
-            {
-                VM.AddMessageToTerminal(Adapter.Id, Adapter.RxData);
+            //if (Adapter.ProcessPacket_f)
+            //{
+                
+                VM.AddMessageToRxTerminal(Adapter.Id, Adapter.RxData);
+                VM.MessageLog+=DateTime.Now.ToString("HH:mm:ss:fff")+"   >> "+Adapter.Id +" |   "+Convert.ToHexString(Adapter.RxData)+"\r";
                 Adapter.ProcessPacket_f = false;
                 if (Adapter.Id == "18FE6D44")//HTR_STATUS
                 {
@@ -67,7 +69,7 @@ namespace SFC.Models
                 {
                     UDS.ParseMessage(Adapter.RxData);
                 }
-            }
+            //}
         }
 
 
@@ -122,7 +124,7 @@ namespace SFC.Models
             while (true)
             {
                 if (VM.RegularReqUDS == false) return;
-                Thread.Sleep(100);
+                Thread.Sleep(10);
                 TxData[0] = 3;
                 TxData[1] = 0x22;
                 TxData[2] = 0x44;

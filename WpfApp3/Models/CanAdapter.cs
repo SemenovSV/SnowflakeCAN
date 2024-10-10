@@ -38,12 +38,16 @@ namespace SFC.Models
 
         public void DataReceivedHandler(object sender, SerialDataReceivedEventArgs args)
         {
-            Port.Recieve();
-            ReadBuffer();
-            Parent.ParseMessage();
+            if (Port.ComPort.IsOpen)
+            {
+                string existing = Port.ComPort.ReadExisting();
+                ParseMessage(existing);
+            }
+            //ReadBuffer();
+            //Parent.ParseMessage();
         }
 
-        public void ReadBuffer()
+        /*public void ReadBuffer()
         {
             while (Port.ReadPtr!=Port.WritePtr)
             {
@@ -59,25 +63,29 @@ namespace SFC.Models
 
                 if (++Port.ReadPtr>=ComPortModel.BufSize) Port.ReadPtr = 0;
             }
-        }
+        }*/
 
-        public void ParseMessage()
+        public void ParseMessage(string _mes)
         {
-            string message = Encoding.Default.GetString(MessageIn);
-            if(MessageIn[0] == 'T')
+            string message = _mes;//Encoding.Default.GetString(MessageIn);
+            for(int  j = 0; j<message.Length; j++)
             {
-                Id = message.Substring(1, 8);
-
-                for (int i = 0; i<8; i++)
+                if (message[j] == 'T' && message[j+26] =='\r')
                 {
-                    string tmp = message.Substring(2 + 8 + i * 2, 2);
-                    RxData[i] = byte.Parse(tmp, System.Globalization.NumberStyles.HexNumber);
-                    ProcessPacket_f = true;
+                    Id = message.Substring(j+1, 8);
+                    for (int i = 0; i<8; i++)
+                    {
+                        string tmp = message.Substring(j + 2 + 8 + i * 2, 2);
+                        RxData[i] = byte.Parse(tmp, System.Globalization.NumberStyles.HexNumber);
+                    }
+                    Parent.ParseMessage();
+                    j+=26;
                 }
-            }
-            else if(MessageIn[0] == 'Z' || MessageIn[0] == 'z')
-            {
-                SuccessTransmission_f = true;
+                else if ((message[j] == 'Z' || message[j] == 'z')&& message[j+1] =='\r')
+                {
+                    j+=1;
+                    SuccessTransmission_f = true;
+                }
             }
         }
 
