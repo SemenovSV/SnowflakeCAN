@@ -42,5 +42,8 @@ namespace SFC.Models
 
         private byte[] _D = new byte[8];
         public byte[] D { get => _D; set { _D = value; RaisePropertyChangedEvent(nameof(D)); } }
+
+        private string _Descriptor;
+        public string Descriptor { get => _Descriptor; set { _Descriptor = value; RaisePropertyChangedEvent(nameof(Descriptor)); } }
     }
 }

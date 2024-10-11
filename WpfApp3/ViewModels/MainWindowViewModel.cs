@@ -22,6 +22,8 @@ using System.IO.Packaging;
 using System.Xml.Linq;
 using System.Collections.ObjectModel;
 using static SFC.ViewModels.MainWindowViewModel;
+using System.Collections.Specialized;
+using System.Xml.Serialization;
 
 
 namespace SFC.ViewModels
@@ -596,6 +598,14 @@ namespace SFC.ViewModels
         {
             Message _mes = new Message();
             ManualMessages.Add(_mes);
+
+            using (var writer = new StreamWriter("text.txt"))
+            {
+                foreach (Message item in ManualMessages)
+                {
+                    writer.WriteLine(item.ToString());
+                }
+            }
         }
         private bool CanAddRowCommandExecute(object parameter)
         {
@@ -619,7 +629,7 @@ namespace SFC.ViewModels
             {
                 Protocol.SendMessage(SelectedMessage.ID, SelectedMessage.D);
             }
-            catch (Exception ex) { };
+            catch { };
         }
         private bool CanSendRowMessageCommandExecute(object parameter)
         {
@@ -630,9 +640,18 @@ namespace SFC.ViewModels
         public ObservableCollection<Message> ManualMessages
         { set => Set(ref _ManualMessages, value); get => _ManualMessages; }
 
-        private Message _SelectedMessage;
+        private Message _SelectedMessage = new Message();
         public Message SelectedMessage
         { set => Set(ref _SelectedMessage, value); get => _SelectedMessage; }
+
+        private void RefreshManualMessageOnFile(object sender, PropertyChangedEventArgs e)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Message>));
+            using (var writer = new StreamWriter("mes.xml"))
+            {
+                xs.Serialize(writer, ManualMessages);
+            }
+        }
         #endregion
 
         public MainWindowViewModel()
@@ -653,6 +672,7 @@ namespace SFC.ViewModels
             Protocol.UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
             Protocol.UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);
 
+            SelectedMessage.PropertyChanged+=RefreshManualMessageOnFile;
             //Protocol.StateProcess = new Progress<short>(status => AddMessageToConsole(status));
         }
     }

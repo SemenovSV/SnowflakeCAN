@@ -231,7 +231,7 @@
                                                 <DataGridTextColumn Header="D6"  Width="50" Binding="{Binding D[5]}"/>
                                                 <DataGridTextColumn Header="D7"  Width="50" Binding="{Binding D[6]}"/>
                                                 <DataGridTextColumn Header="D8"  Width="50" Binding="{Binding D[7]}"/>
-                                                <DataGridTextColumn Header="Дескриптор"  Width="500" Binding="{Binding Descroption}"/>
+                                                <DataGridTextColumn Header="Дескриптор"  Width="500" Binding="{Binding Descriptor}"/>
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </StackPanel>
