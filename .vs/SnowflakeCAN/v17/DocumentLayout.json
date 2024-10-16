@@ -3,48 +3,52 @@
   "WorkspaceRootPath": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\models\\j1939_gaz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\models\\j1939_gaz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\view\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\view\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\view\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\view\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|c:\\users\\ssv.central\\desktop\\firmwares\\desktop\\sfc\\wpfapp3\\viewmodels\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\viewmodels\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\view\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\view\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\models\\protocoluds.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\models\\protocoluds.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\models\\canadapter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\models\\canadapter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\models\\comportmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\models\\comportmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|c:\\users\\ssv.central\\desktop\\firmwares\\desktop\\sfc\\wpfapp3\\viewmodels\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\viewmodels\\mainwindowviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|c:\\users\\ssv.central\\desktop\\firmwares\\desktop\\sfc\\wpfapp3\\services\\implementations\\listboxautoscroll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\services\\implementations\\listboxautoscroll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\models\\intelhex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\models\\intelhex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\viewmodels\\base\\observableobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\viewmodels\\base\\observableobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\models\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\models\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\models\\j1939_gaz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\models\\j1939_gaz.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\models\\comportmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\models\\comportmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\viewmodels\\base\\viewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\viewmodels\\base\\viewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\viewmodels\\base\\observableobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\viewmodels\\base\\observableobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\wpfapp3\\models\\protocoluds.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{116796B6-35EE-4EF5-B49F-BE6FE460DAC7}|WpfApp3\\MVVM.csproj|solutionrelative:wpfapp3\\models\\protocoluds.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -54,8 +58,22 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 9,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CanAdapter.cs",
+              "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\CanAdapter.cs",
+              "RelativeDocumentMoniker": "WpfApp3\\Models\\CanAdapter.cs",
+              "ToolTip": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\CanAdapter.cs",
+              "RelativeToolTip": "WpfApp3\\Models\\CanAdapter.cs",
+              "ViewState": "AQIAAFEAAAAAAAAAAAAAAFoAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-24T05:37:27.446Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -66,38 +84,50 @@
               "RelativeToolTip": "WpfApp3\\View\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2024-09-21T16:36:39.511Z",
-              "IsPinned": true,
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
+              "Title": "ListboxAutoscroll.cs",
+              "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Services\\Implementations\\ListboxAutoscroll.cs",
+              "RelativeDocumentMoniker": "WpfApp3\\Services\\Implementations\\ListboxAutoscroll.cs",
+              "ToolTip": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Services\\Implementations\\ListboxAutoscroll.cs",
+              "RelativeToolTip": "WpfApp3\\Services\\Implementations\\ListboxAutoscroll.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-16T11:31:42.016Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "J1939_GAZ.cs",
               "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\J1939_GAZ.cs",
               "RelativeDocumentMoniker": "WpfApp3\\Models\\J1939_GAZ.cs",
               "ToolTip": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\J1939_GAZ.cs",
               "RelativeToolTip": "WpfApp3\\Models\\J1939_GAZ.cs",
-              "ViewState": "AQIAADYAAAAAAAAAAAD4v0EAAAApAAAA",
+              "ViewState": "AQIAAJ4AAAAAAAAAAAAAAK8AAABSAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-07T17:57:21.516Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 6,
               "Title": "Message.cs",
               "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\Message.cs",
               "RelativeDocumentMoniker": "WpfApp3\\Models\\Message.cs",
               "ToolTip": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\Message.cs",
               "RelativeToolTip": "WpfApp3\\Models\\Message.cs",
-              "ViewState": "AQIAACIAAAAAAAAAAAAlwC4AAABrAAAA",
+              "ViewState": "AQIAACcAAAAAAAAAAAAAADIAAABJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-25T11:51:02.207Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 5,
               "Title": "IntelHEX.cs",
               "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\IntelHEX.cs",
               "RelativeDocumentMoniker": "WpfApp3\\Models\\IntelHEX.cs",
@@ -110,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "ComPortModel.cs",
               "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\ComPortModel.cs",
               "RelativeDocumentMoniker": "WpfApp3\\Models\\ComPortModel.cs",
@@ -123,20 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CanAdapter.cs",
-              "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\CanAdapter.cs",
-              "RelativeDocumentMoniker": "WpfApp3\\Models\\CanAdapter.cs",
-              "ToolTip": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\CanAdapter.cs",
-              "RelativeToolTip": "WpfApp3\\Models\\CanAdapter.cs",
-              "ViewState": "AQIAAFEAAAAAAAAAAAAAAFoAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-24T05:37:27.446Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "ProtocolUDS.cs",
               "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\Models\\ProtocolUDS.cs",
               "RelativeDocumentMoniker": "WpfApp3\\Models\\ProtocolUDS.cs",
@@ -149,33 +166,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "MainWindowViewModel.cs",
               "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\ViewModels\\MainWindowViewModel.cs",
               "RelativeDocumentMoniker": "WpfApp3\\ViewModels\\MainWindowViewModel.cs",
               "ToolTip": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\ViewModels\\MainWindowViewModel.cs",
               "RelativeToolTip": "WpfApp3\\ViewModels\\MainWindowViewModel.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAIMCAAAfAAAA",
+              "ViewState": "AQIAAJ4CAAAAAAAAAAAAAKoCAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-23T11:03:06.952Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\View\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "WpfApp3\\View\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\View\\MainWindow.xaml.cs",
               "RelativeToolTip": "WpfApp3\\View\\MainWindow.xaml.cs",
-              "ViewState": "AQIAABsAAAAAAAAAAAAEwCEAAAAMAAAA",
+              "ViewState": "AQIAACQAAAAAAAAAAAAmwDkAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-23T08:54:37.792Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "ObservableObject.cs",
               "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\ViewModels\\Base\\ObservableObject.cs",
               "RelativeDocumentMoniker": "WpfApp3\\ViewModels\\Base\\ObservableObject.cs",
@@ -188,7 +205,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "ViewModel.cs",
               "DocumentMoniker": "C:\\Users\\ssv.CENTRAL\\Desktop\\firmwares\\desktop\\SFC\\WpfApp3\\ViewModels\\Base\\ViewModel.cs",
               "RelativeDocumentMoniker": "WpfApp3\\ViewModels\\Base\\ViewModel.cs",
@@ -196,7 +213,8 @@
               "RelativeToolTip": "WpfApp3\\ViewModels\\Base\\ViewModel.cs",
               "ViewState": "AQIAACgAAAAAAAAAAAAWwDEAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-21T20:12:17.066Z"
+              "WhenOpened": "2024-09-21T20:12:17.066Z",
+              "EditorCaption": ""
             }
           ]
         }

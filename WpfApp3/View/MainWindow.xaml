@@ -68,7 +68,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="80"/>
-                            <RowDefinition Height="420"/>
+                            <RowDefinition Height="540"/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0">
@@ -182,14 +182,14 @@
                                             <DataGridTextColumn Header="Name" Width="60" Binding="{Binding Name}"  IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Cnt"  Width="60" Binding="{Binding Cnt}"  IsReadOnly="True"/>
                                             <DataGridTextColumn Header="ID"   Width="80" Binding="{Binding ID}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D1"   Width="50" Binding="{Binding D[0]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D2"   Width="50" Binding="{Binding D[1]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D3"   Width="50" Binding="{Binding D[2]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D4"   Width="50" Binding="{Binding D[3]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D5"   Width="50" Binding="{Binding D[4]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D6"   Width="50" Binding="{Binding D[5]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D7"   Width="50" Binding="{Binding D[6]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D8"   Width="50" Binding="{Binding D[7]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D1"   Width="50" Binding="{Binding D1}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D2"   Width="50" Binding="{Binding D2}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D3"   Width="50" Binding="{Binding D3}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D4"   Width="50" Binding="{Binding D4}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D5"   Width="50" Binding="{Binding D5}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D6"   Width="50" Binding="{Binding D6}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D7"   Width="50" Binding="{Binding D7}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D8"   Width="50" Binding="{Binding D8}" IsReadOnly="True"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </GroupBox>
@@ -199,14 +199,14 @@
                                             <DataGridTextColumn Header="Name" Width="60" Binding="{Binding Name}"  IsReadOnly="True"/>
                                             <DataGridTextColumn Header="Cnt"  Width="60" Binding="{Binding Cnt}"  IsReadOnly="True"/>
                                             <DataGridTextColumn Header="ID"   Width="80" Binding="{Binding ID}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D1"   Width="50" Binding="{Binding D[0]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D2"   Width="50" Binding="{Binding D[1]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D3"   Width="50" Binding="{Binding D[2]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D4"   Width="50" Binding="{Binding D[3]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D5"   Width="50" Binding="{Binding D[4]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D6"   Width="50" Binding="{Binding D[5]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D7"   Width="50" Binding="{Binding D[6]}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="D8"   Width="50" Binding="{Binding D[7]}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D1"   Width="50" Binding="{Binding D1}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D2"   Width="50" Binding="{Binding D2}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D3"   Width="50" Binding="{Binding D3}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D4"   Width="50" Binding="{Binding D4}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D5"   Width="50" Binding="{Binding D5}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D6"   Width="50" Binding="{Binding D6}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D7"   Width="50" Binding="{Binding D7}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="D8"   Width="50" Binding="{Binding D8}" IsReadOnly="True"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </GroupBox>
@@ -220,17 +220,17 @@
                                         <ColumnDefinition Width="200"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <DataGrid Name="ManualMessage" Height="270" ItemsSource="{Binding ManualMessages}" SelectedItem="{Binding SelectedMessage}" AutoGenerateColumns="False" HorizontalGridLinesBrush="DarkGray" RowBackground="Gainsboro" AlternatingRowBackground="White" HorizontalAlignment="Center">
+                                        <DataGrid Name="ManualMessage" Height="270" ItemsSource="{Binding ManualMessages}" SelectedItem="{Binding SelectedMessage}"   AutoGenerateColumns="False"  HorizontalGridLinesBrush="DarkGray" RowBackground="Gainsboro" AlternatingRowBackground="White" HorizontalAlignment="Center">
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="ID"  Width="120" Binding="{Binding ID}"/>
-                                                <DataGridTextColumn Header="D1"  Width="50" Binding="{Binding D[0]}"/>
-                                                <DataGridTextColumn Header="D2"  Width="50" Binding="{Binding D[1]}"/>
-                                                <DataGridTextColumn Header="D3"  Width="50" Binding="{Binding D[2]}"/>
-                                                <DataGridTextColumn Header="D4"  Width="50" Binding="{Binding D[3]}"/>
-                                                <DataGridTextColumn Header="D5"  Width="50" Binding="{Binding D[4]}"/>
-                                                <DataGridTextColumn Header="D6"  Width="50" Binding="{Binding D[5]}"/>
-                                                <DataGridTextColumn Header="D7"  Width="50" Binding="{Binding D[6]}"/>
-                                                <DataGridTextColumn Header="D8"  Width="50" Binding="{Binding D[7]}"/>
+                                                <DataGridTextColumn Header="ID"  Width="120" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                                <DataGridTextColumn Header="D1"  Width="50"  Binding="{Binding D1, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                                <DataGridTextColumn Header="D2"  Width="50"  Binding="{Binding D2, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                                <DataGridTextColumn Header="D3"  Width="50"  Binding="{Binding D3, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                                <DataGridTextColumn Header="D4"  Width="50"  Binding="{Binding D4, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                                <DataGridTextColumn Header="D5"  Width="50"  Binding="{Binding D5, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                                <DataGridTextColumn Header="D6"  Width="50"  Binding="{Binding D6, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                                <DataGridTextColumn Header="D7"  Width="50"  Binding="{Binding D7, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                                <DataGridTextColumn Header="D8"  Width="50"  Binding="{Binding D8, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                                 <DataGridTextColumn Header="Дескриптор"  Width="500" Binding="{Binding Descriptor}"/>
                                             </DataGrid.Columns>
                                         </DataGrid>
@@ -251,8 +251,8 @@
                             </GroupBox>
                         </StackPanel>
                         <StackPanel Grid.Row="2">
-                            <ScrollViewer MaxHeight="170" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                                <TextBlock Text="{Binding MessageLog}"/>
+                            <ScrollViewer Name="TermScroll" MaxHeight="170" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <ListBox ItemsSource="{Binding MessageLog}" VirtualizingStackPanel.IsVirtualizing="True"/>
                             </ScrollViewer>
                         </StackPanel>
                     </Grid>
@@ -287,8 +287,8 @@
                                     <RowDefinition Height="60"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="640"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="1057"/>
                                 </Grid.ColumnDefinitions>
 
                                 <Button x:Name="buttonFile" Padding="2" Content="Файл" Command="{Binding ReadFileCommand}" Grid.Column="0" Margin="15,15,15,15" IsEnabled="{Binding EnableAction}"/>
@@ -314,7 +314,7 @@
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="160"/>
-                                    <ColumnDefinition Width="500"/>
+                                    <ColumnDefinition Width="1000"/>
                                     <ColumnDefinition Width="100"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0" Content="Время загрузки: " VerticalAlignment="Center" Margin="25,0,0,0"></Label>

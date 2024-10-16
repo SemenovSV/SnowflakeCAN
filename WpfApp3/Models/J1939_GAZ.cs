@@ -37,7 +37,7 @@ namespace SFC.Models
         public void ParseMessage()
         {
             VM.AddMessageToRxTerminal(Adapter.Id, Adapter.RxData);
-            VM.MessageLog+=DateTime.Now.ToString("HH:mm:ss:fff")+"   >> "+Adapter.Id +" |   "+Convert.ToHexString(Adapter.RxData)+"\r";
+            VM.AddMessageToMessageLog(DateTime.Now.ToString("HH:mm:ss:fff")+"   <<Rx "+Adapter.Id +" |   "+Convert.ToHexString(Adapter.RxData));
             Adapter.ProcessPacket_f = false;
             if (Adapter.Id == "18FE6D44")//HTR_STATUS
             {
@@ -173,6 +173,7 @@ namespace SFC.Models
         { 
             Adapter.SendMessage(_id, _data);
             VM.AddMessageToTxTerminal(_id, _data);
+            VM.AddMessageToMessageLog(DateTime.Now.ToString("HH:mm:ss:fff")+"   Tx>> "+_id +" |   "+Convert.ToHexString(_data));
         }
     }
 }

@@ -22,8 +22,9 @@ using System.IO.Packaging;
 using System.Xml.Linq;
 using System.Collections.ObjectModel;
 using static SFC.ViewModels.MainWindowViewModel;
-using System.Collections.Specialized;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using System.Xml.Serialization;
+using System.Collections.Specialized;
 
 
 namespace SFC.ViewModels
@@ -33,7 +34,7 @@ namespace SFC.ViewModels
 
         //public ProtocolUDS UDS;
         public J1939_GAZ Protocol;
-        private SynchronizationContext? uiContext = SynchronizationContext.Current;
+        private SynchronizationContext uiContext = SynchronizationContext.Current;
 
         #region Font
         private ushort _TxtFontSize = 18;
@@ -546,11 +547,12 @@ namespace SFC.ViewModels
         public void AddMessageToRxTerminal(string id, byte[] data)
         {
             Message mes = new Message(id, data, GetMessageName(id));
-            foreach(Message _mes in MessagesRX)
+            foreach (Message _mes in MessagesRX)
             {
-                if(_mes.ID == id)
+                if (_mes.ID == id)
                 {
                     _mes.Cnt++;
+                    _mes.D1 = data[0]; _mes.D2 = data[1]; _mes.D3 = data[2]; _mes.D4 = data[3]; _mes.D5 = data[4]; _mes.D6 = data[5]; _mes.D7 = data[6]; _mes.D8 = data[7];
                     return;
                 }
             }
@@ -582,30 +584,19 @@ namespace SFC.ViewModels
                 if (_mes.ID == id)
                 {
                     _mes.Cnt++;
+                    _mes.D1 = data[0]; _mes.D2 = data[1]; _mes.D3 = data[2]; _mes.D4 = data[3]; _mes.D5 = data[4]; _mes.D6 = data[5]; _mes.D7 = data[6]; _mes.D8 = data[7];
                     return;
                 }
-                
+
             }
             uiContext.Send(x => MessagesTX.Add(mes), null);
         }
-
-        private string _MessageLog = "";
-        public string MessageLog
-        { set => Set(ref _MessageLog, value); get => _MessageLog; }
 
         public ICommand AddRowCommand { get; }
         private void OnAddRowCommandExecuted(object parameter)
         {
             Message _mes = new Message();
             ManualMessages.Add(_mes);
-
-            using (var writer = new StreamWriter("text.txt"))
-            {
-                foreach (Message item in ManualMessages)
-                {
-                    writer.WriteLine(item.ToString());
-                }
-            }
         }
         private bool CanAddRowCommandExecute(object parameter)
         {
@@ -627,7 +618,15 @@ namespace SFC.ViewModels
         {
             try
             {
-                Protocol.SendMessage(SelectedMessage.ID, SelectedMessage.D);
+                byte[] _mes = { SelectedMessage.D1,
+                                SelectedMessage.D2,
+                                SelectedMessage.D3,
+                                SelectedMessage.D4,
+                                SelectedMessage.D5,
+                                SelectedMessage.D6,
+                                SelectedMessage.D7,
+                                SelectedMessage.D8 };
+                Protocol.SendMessage(SelectedMessage.ID, _mes);
             }
             catch { };
         }
@@ -636,22 +635,52 @@ namespace SFC.ViewModels
             return true;
         }
 
-        private ObservableCollection<Message> _ManualMessages = new ObservableCollection<Message>() { };
+        private ObservableCollection<Message> _ManualMessages = (ObservableCollection<Message>)Read();
         public ObservableCollection<Message> ManualMessages
         { set => Set(ref _ManualMessages, value); get => _ManualMessages; }
 
-        private Message _SelectedMessage = new Message();
-        public Message SelectedMessage
-        { set => Set(ref _SelectedMessage, value); get => _SelectedMessage; }
-
-        private void RefreshManualMessageOnFile(object sender, PropertyChangedEventArgs e)
+        static object Read()
         {
-            XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<Message>));
-            using (var writer = new StreamWriter("mes.xml"))
-            {
-                xs.Serialize(writer, ManualMessages);
+            XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Message>));
+            TextReader textReader = null;
+            try {
+                textReader = new StreamReader(@"messages.xml");
+                return serializer.Deserialize(textReader);
             }
+            catch{
+                if(textReader == null)
+                {
+                    TextWriter textWriter = new StreamWriter(@"messages.xml");
+                }
+            }
+            ObservableCollection<Message> _msg = new();
+            return _msg;
         }
+
+        private Message _SelectedMessage = new Message();
+        public Message SelectedMessage//ToDo привязаться к изменению свойства 
+        { 
+            set {
+                Set(ref _SelectedMessage, value);
+                XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<Message>));
+                TextWriter textWriter = new StreamWriter(@"messages.xml");
+                serializer.Serialize(textWriter, ManualMessages);
+                textWriter.Close();
+            }
+            get => _SelectedMessage; 
+        }
+
+
+        private ObservableCollection<string> _MessageLog = new ObservableCollection<string> { };
+        public ObservableCollection<string> MessageLog
+        { set => Set(ref _MessageLog, value); get => _MessageLog; }
+
+        public void AddMessageToMessageLog(string _msg)
+        {
+            uiContext.Send(x => MessageLog.Add(_msg), null);
+        }
+
+
         #endregion
 
         public MainWindowViewModel()
@@ -672,7 +701,7 @@ namespace SFC.ViewModels
             Protocol.UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
             Protocol.UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);
 
-            SelectedMessage.PropertyChanged+=RefreshManualMessageOnFile;
+
             //Protocol.StateProcess = new Progress<short>(status => AddMessageToConsole(status));
         }
     }
