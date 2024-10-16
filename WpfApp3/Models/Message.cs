@@ -14,6 +14,7 @@ namespace SFC.Models
         {
             _ID = "";
             _Name = "";
+            _Cnt = 1;
             _D1 = 255;
             _D2 = 255;
             _D3 = 255;
@@ -31,6 +32,7 @@ namespace SFC.Models
         {
             _ID = _id;
             _Name = _name;
+            _Cnt = 1;
 
             _D1 = _data[0];
             _D2 = _data[1];

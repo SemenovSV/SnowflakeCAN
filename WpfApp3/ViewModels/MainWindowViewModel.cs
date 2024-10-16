@@ -551,7 +551,7 @@ namespace SFC.ViewModels
             {
                 if (_mes.ID == id)
                 {
-                    _mes.Cnt++;
+                    ++_mes.Cnt;
                     _mes.D1 = data[0]; _mes.D2 = data[1]; _mes.D3 = data[2]; _mes.D4 = data[3]; _mes.D5 = data[4]; _mes.D6 = data[5]; _mes.D7 = data[6]; _mes.D8 = data[7];
                     return;
                 }
@@ -583,7 +583,7 @@ namespace SFC.ViewModels
             {
                 if (_mes.ID == id)
                 {
-                    _mes.Cnt++;
+                    ++_mes.Cnt;
                     _mes.D1 = data[0]; _mes.D2 = data[1]; _mes.D3 = data[2]; _mes.D4 = data[3]; _mes.D5 = data[4]; _mes.D6 = data[5]; _mes.D7 = data[6]; _mes.D8 = data[7];
                     return;
                 }
@@ -626,7 +626,14 @@ namespace SFC.ViewModels
                                 SelectedMessage.D6,
                                 SelectedMessage.D7,
                                 SelectedMessage.D8 };
-                Protocol.SendMessage(SelectedMessage.ID, _mes);
+                if (SelectedMessage.ID.Length==8)
+                {
+                    Protocol.SendMessage(SelectedMessage.ID, _mes);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid ID");
+                }
             }
             catch { };
         }
@@ -681,6 +688,24 @@ namespace SFC.ViewModels
         }
 
 
+        public ICommand SaveTerminalLogCommand { get; }
+        private void OnSaveTerminalLogCommandExecuted(object parameter)
+        {
+            TextWriter textWriter = new StreamWriter(@"log_"+DateTime.Now.ToString("dd-MM-yyyy-HH-mm")+".txt");
+            for (int i = 0; i<MessageLog.Count; i++) {textWriter.WriteLine( i+"     " + MessageLog[i] + "\r"); }
+            textWriter.Close();
+        }
+        private bool CanSaveTerminalLogCommandExecute(object parameter) => true;
+
+        public ICommand ClearTerminalCommand { get; }
+        private void OnClearTerminalCommandExecuted(object parameter)
+        {
+            MessageLog.Clear();
+            MessagesRX.Clear();
+            MessagesTX.Clear();
+        }
+        private bool CanClearTerminalCommandExecute(object parameter) => true;
+
         #endregion
 
         public MainWindowViewModel()
@@ -697,6 +722,8 @@ namespace SFC.ViewModels
             AddRowCommand = new LambdaCommand(OnAddRowCommandExecuted, CanAddRowCommandExecute);
             RemoveRowCommand = new LambdaCommand(OnRemoveRowCommandExecuted, CanRemoveRowCommandExecute);
             SendRowMessageCommand = new LambdaCommand(OnSendRowMessageCommandExecuted, CanSendRowMessageCommandExecute);
+            SaveTerminalLogCommand = new LambdaCommand(OnSaveTerminalLogCommandExecuted, CanSaveTerminalLogCommandExecute);
+            ClearTerminalCommand = new LambdaCommand(OnClearTerminalCommandExecuted, CanClearTerminalCommandExecute);
 
             Protocol.UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
             Protocol.UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);

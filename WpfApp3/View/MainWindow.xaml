@@ -213,14 +213,14 @@
                             </Grid>
                         </StackPanel>
                         <StackPanel Grid.Row="1">
-                            <GroupBox>
+                            <GroupBox Header="Формирование сообщений">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1050"/>
                                         <ColumnDefinition Width="200"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <DataGrid Name="ManualMessage" Height="270" ItemsSource="{Binding ManualMessages}" SelectedItem="{Binding SelectedMessage}"   AutoGenerateColumns="False"  HorizontalGridLinesBrush="DarkGray" RowBackground="Gainsboro" AlternatingRowBackground="White" HorizontalAlignment="Center">
+                                        <DataGrid Name="ManualMessage" Height="250" ItemsSource="{Binding ManualMessages}" SelectedItem="{Binding SelectedMessage}"   AutoGenerateColumns="False"  HorizontalGridLinesBrush="DarkGray" RowBackground="Gainsboro" AlternatingRowBackground="White" HorizontalAlignment="Center">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="ID"  Width="120" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                                 <DataGridTextColumn Header="D1"  Width="50"  Binding="{Binding D1, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
@@ -251,9 +251,31 @@
                             </GroupBox>
                         </StackPanel>
                         <StackPanel Grid.Row="2">
-                            <ScrollViewer Name="TermScroll" MaxHeight="170" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                                <ListBox ItemsSource="{Binding MessageLog}" VirtualizingStackPanel.IsVirtualizing="True"/>
-                            </ScrollViewer>
+                            <GroupBox Header="Терминал">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1050"/>
+                                        <ColumnDefinition Width="200"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <ScrollViewer Name="TermScroll" Height="140" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" ScrollChanged="TermScroll_ScrollChanged">
+                                            <ListBox ItemsSource="{Binding MessageLog}" VirtualizingStackPanel.IsVirtualizing="True"/>
+                                        </ScrollViewer>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="40"/>
+                                            </Grid.RowDefinitions>
+                                            <Button Grid.Row="0" Content="Сохранить" Command="{Binding SaveTerminalLogCommand}" Margin="5,5,5,5"/>
+                                            <Button Grid.Row="1" Content="Очистить" Command="{Binding ClearTerminalCommand}" Margin="5,5,5,5"/>
+
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </GroupBox>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
@@ -262,11 +284,39 @@
                 <StackPanel>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="80"/>
-                            <RowDefinition Height="440"/>
-                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="120"/>
+                            <RowDefinition Height="120"/>
+                            <RowDefinition Height="120"/>
+                            <RowDefinition Height="120"/>
+                            <RowDefinition Height="120"/>
                         </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="1000"/>
+                        </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="0">
+                            <Button Content="Запуск сессии" Margin="5,5,5,5"  />
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <Label>Нагнетатель воздуха</Label>
+                            <Slider/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2">
+                            <Label>Блок розжига</Label>
+                            <Slider />
+                        </StackPanel>
+                        <StackPanel Grid.Row="3">
+                            <Label>Топливный клапан</Label>
+                            <Slider />
+                        </StackPanel>
+                        <StackPanel Grid.Row="4">
+                            <Label>Помпа</Label>
+                            <Slider />
+                        </StackPanel>
+                        <StackPanel Grid.Row="5">
+                            <Label>Подогрев форсунки</Label>
+                            <Slider />
                         </StackPanel>
                     </Grid>
                 </StackPanel>
@@ -277,7 +327,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
                             <RowDefinition Height="60"/>
-                            <RowDefinition Height="350"/>
+                            <RowDefinition Height="465"/>
                             <RowDefinition Height="20"/>
                             <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
