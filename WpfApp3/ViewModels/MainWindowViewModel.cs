@@ -708,6 +708,41 @@ namespace SFC.ViewModels
 
         #endregion
 
+        #region IOControl
+
+        public ICommand StartIOControlCommand { get; }
+        private void OnStartIOControlCommandExecuted(object parameter)
+        {
+            Protocol.UDS.StartProcessIOControl();
+        }
+
+        private bool CanStartIOControlCommandExecute(object parameter)
+        {
+            return true;
+        }
+
+        private int _FanRevManual = 0;
+        public int FanRevManual
+        { set => Set(ref _FanRevManual, value); get => _FanRevManual; }
+
+        private bool _SparkPlugManual = false;
+        public bool SparkPlugManual
+        { set => Set(ref _SparkPlugManual, value); get => _SparkPlugManual; }
+
+        private bool _FuelValveManual = false;
+        public bool FuelValveManual
+        { set => Set(ref _FuelValveManual, value); get => _FuelValveManual; }
+
+        private bool _WaterPumpManual = false;
+        public bool WaterPumpManual
+        { set => Set(ref _WaterPumpManual, value); get => _WaterPumpManual; }
+
+        private bool _InjectorHeaterManual = false;
+        public bool InjectorHeaterManual
+        { set => Set(ref _InjectorHeaterManual, value); get => _InjectorHeaterManual; }
+
+        #endregion
+
         public MainWindowViewModel()
         {
             Protocol = new J1939_GAZ(this);
@@ -724,6 +759,7 @@ namespace SFC.ViewModels
             SendRowMessageCommand = new LambdaCommand(OnSendRowMessageCommandExecuted, CanSendRowMessageCommandExecute);
             SaveTerminalLogCommand = new LambdaCommand(OnSaveTerminalLogCommandExecuted, CanSaveTerminalLogCommandExecute);
             ClearTerminalCommand = new LambdaCommand(OnClearTerminalCommandExecuted, CanClearTerminalCommandExecute);
+            StartIOControlCommand = new LambdaCommand(OnStartIOControlCommandExecuted, CanStartIOControlCommandExecute);
 
             Protocol.UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
             Protocol.UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);

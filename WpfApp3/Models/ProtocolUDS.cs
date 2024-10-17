@@ -71,11 +71,12 @@ namespace SFC.Models
         private bool
             Accesed_f = false,
             SwitchedToBoot_f = false,
-            SwitchedToSession_f = false,
+            SwitchedToSessionBoot_f = false,
             StartLoading_f= false,
             Loaded_f = false,
             CheckedCrc_f = false,
-            RunnedMainApplication_f = false;
+            RunnedMainApplication_f = false,
+            SwitchedToSessionDiagnostic_f =  false;
         private bool
             GetSeed_f = true;
 
@@ -114,8 +115,12 @@ namespace SFC.Models
                     if(message[2] == SESSION_PROGRAMMING)
                     {
                         Parent.VM.ConsoleContent +="Переход на сессию программирования осуществлён\r";
-                        SwitchedToSession_f = true;
+                        SwitchedToSessionBoot_f = true;
                         LoadFaultCnt = 0;
+                    }
+                    else if(message[2] == SESSION_EXTENDED_DIAGNOSTIC)
+                    {
+                        SwitchedToSessionDiagnostic_f = true;
                     }
                 }
                 else if (Service == SERVICE_ECU_RESET+0x40)
@@ -260,7 +265,7 @@ namespace SFC.Models
             LoadTime.Restart();
             Accesed_f = false;
             SwitchedToBoot_f = false;
-            SwitchedToSession_f = false;
+            SwitchedToSessionBoot_f = false;
             StartLoading_f= false;
             Loaded_f = false;
             CheckedCrc_f = false;
@@ -285,7 +290,7 @@ namespace SFC.Models
             while (true)
             {
                 if (!Accesed_f) GetAccess();
-                else if (!SwitchedToSession_f) SwitchToSession();
+                else if (!SwitchedToSessionBoot_f) SwitchToSessionBoot();
                 else if (!SwitchedToBoot_f) SwitchToBootloader();
                 else if (!StartLoading_f) StartLoading();
                 else if (!Loaded_f) LoadFirmware();
@@ -329,7 +334,7 @@ namespace SFC.Models
             Thread.Sleep(DELAY_ATTEMPTING);
         }
 
-        private void SwitchToSession()
+        private void SwitchToSessionBoot()
         {
             TxData[0]=2;
             TxData[1]=SERVICE_SESSION_CONTROL;
@@ -509,5 +514,62 @@ namespace SFC.Models
             IdTxUDS = "18DA"+ReceiverId.ToString("X2")+"F1";
             IdRxUDS = IdTxUDS.Substring(0, 4)+IdTxUDS.Substring(6, 2)+IdTxUDS.Substring(4, 2);
         }
+
+        public Thread StartProcessIOControl()
+        {
+
+            Thread IOControlThread = new Thread(IOControlProcess);
+            IOControlThread.Name = "IOControlProcess";
+            IOControlThread.IsBackground = true;
+            IOControlThread.Start();
+
+            SwitchedToSessionDiagnostic_f = false;
+            Accesed_f = false;
+
+            return IOControlThread;
+
+        }
+        private void IOControlProcess()
+        {
+            while (true)
+            {
+                if (!Accesed_f) GetAccess();
+                else if (!SwitchedToSessionDiagnostic_f) SwitchToSessionDiagnostic();
+                else
+                {
+                    SendTesterPresent();
+                }
+
+                Thread.Sleep(1000);
+            }
+        }
+
+        private void SwitchToSessionDiagnostic()
+        {
+            TxData[0]=2;
+            TxData[1]=SERVICE_SESSION_CONTROL;
+            TxData[2]=SESSION_EXTENDED_DIAGNOSTIC;
+            TxData[3]=0xFF;
+            TxData[4]=0xFF;
+            TxData[5]=0xFF;
+            TxData[6]=0xFF;
+            TxData[7]=0xFF;
+            Parent.SendMessage(IdTxUDS, TxData);
+        }
+
+        private void SendTesterPresent()
+        {
+            TxData[0]=0x30;
+            TxData[1]=0xFF;
+            TxData[2]=0xFF;
+            TxData[3]=0xFF;
+            TxData[4]=0xFF;
+            TxData[5]=0xFF;
+            TxData[6]=0xFF;
+            TxData[7]=0xFF;
+            Parent.SendMessage(IdTxUDS, TxData);
+        }
+
+
     }
 }

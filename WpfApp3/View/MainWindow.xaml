@@ -63,7 +63,7 @@
                     </Grid>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Управление" FontSize="16">
+            <TabItem Header="Управление" FontSize="16" IsEnabled="{Binding EnableAction}">
                 <StackPanel>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -162,7 +162,7 @@
                     </Grid>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Терминал" FontSize="16">
+            <TabItem Header="Терминал" FontSize="16" IsEnabled="{Binding EnableAction}">
                 <StackPanel>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -280,7 +280,7 @@
                     </Grid>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Ручник" FontSize="16">
+            <TabItem Header="Ручник" FontSize="16" IsEnabled="{Binding EnableAction}">
                 <StackPanel>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -296,7 +296,7 @@
                             <ColumnDefinition Width="1000"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="0">
-                            <Button Content="Запуск сессии" Margin="5,5,5,5"  />
+                            <Button Content="Запуск сессии" Margin="5,5,5,5" Command="{Binding StartIOControlCommand}" />
                         </StackPanel>
                         <StackPanel Grid.Row="1">
                             <Label>Нагнетатель воздуха</Label>
