@@ -21,7 +21,7 @@ namespace SFC.Models
         private J1939_GAZ Parent;//ToDo Возможно получится избавиться от связи
 
         //const string IdTxUDS = "18DA44F1";
-        string IdTxUDS = "";
+        string IdTxUDS = "18DA44F1";
         string IdRxUDS = "";
 
         byte ReceiverId = 0;
@@ -371,6 +371,7 @@ namespace SFC.Models
         {
             Parent.VM.RegularReqUDS = false;
             Parent.VM.RegularReqHTR = false;
+            Parent.VM.SessionIOControl_f = false;
             StateProcess?.Report(START_LOADING);
             int start_addr = Hex.getProgrammStartAdress();
             TxData[0]=5;
@@ -533,14 +534,28 @@ namespace SFC.Models
         {
             while (true)
             {
+                if (!Parent.VM.SessionIOControl_f)
+                {
+                    SendIOMessage(0, 0);//Завершение сессии
+                    return;
+                }
                 if (!Accesed_f) GetAccess();
                 else if (!SwitchedToSessionDiagnostic_f) SwitchToSessionDiagnostic();
                 else
                 {
+                    SendIOMessage(2, Parent.VM.FanRevManual);
+                    Thread.Sleep(100);
+                    SendIOMessage(4, Convert.ToUInt16(Parent.VM.WaterPumpManual));
+                    Thread.Sleep(100);
+                    SendIOMessage(5, Convert.ToUInt16(Parent.VM.SparkPlugManual));
+                    Thread.Sleep(100);
+                    SendIOMessage(6, Convert.ToUInt16(Parent.VM.FuelValveManual));
+                    Thread.Sleep(100);
+                    SendIOMessage(7, Convert.ToUInt16(Parent.VM.InjectorHeaterManual));
+                    Thread.Sleep(100);
                     SendTesterPresent();
                 }
-
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
             }
         }
 
@@ -559,9 +574,9 @@ namespace SFC.Models
 
         private void SendTesterPresent()
         {
-            TxData[0]=0x30;
-            TxData[1]=0xFF;
-            TxData[2]=0xFF;
+            TxData[0]=0x02;
+            TxData[1]=SERVICE_TESTER_PRESENT;
+            TxData[2]=0;
             TxData[3]=0xFF;
             TxData[4]=0xFF;
             TxData[5]=0xFF;
@@ -569,7 +584,18 @@ namespace SFC.Models
             TxData[7]=0xFF;
             Parent.SendMessage(IdTxUDS, TxData);
         }
-
+        private void SendIOMessage(ushort _control_el, ushort _value)
+        {
+            TxData[0]=0x06;
+            TxData[1]=SERVICE_IO_CONTROL_BY_ID;
+            TxData[2]=(byte)_control_el;
+            TxData[3]=(byte)(_control_el>>8);
+            TxData[4]=3;
+            TxData[5]=(byte)_value;
+            TxData[6]=(byte)(_value>>8);
+            TxData[7]=0xFF;
+            Parent.SendMessage(IdTxUDS, TxData);
+        }
 
     }
 }

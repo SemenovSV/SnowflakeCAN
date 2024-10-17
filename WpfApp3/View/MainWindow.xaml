@@ -280,7 +280,7 @@
                     </Grid>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Ручник" FontSize="16" IsEnabled="{Binding EnableAction}">
+            <TabItem Header="Ручник" FontSize="16" IsEnabled="{Binding EnableAction}" Height="25" VerticalAlignment="Top">
                 <StackPanel>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -296,27 +296,27 @@
                             <ColumnDefinition Width="1000"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="0">
-                            <Button Content="Запуск сессии" Margin="5,5,5,5" Command="{Binding StartIOControlCommand}" />
+                            <Button Content="{Binding ButtonIOControlContent}" Margin="5,5,5,5" Command="{Binding StartIOControlCommand}" />
                         </StackPanel>
                         <StackPanel Grid.Row="1">
                             <Label>Нагнетатель воздуха</Label>
-                            <Slider/>
+                            <Slider Value="{Binding FanRevManual}" Maximum="150" Minimum="0"/>
                         </StackPanel>
                         <StackPanel Grid.Row="2">
                             <Label>Блок розжига</Label>
-                            <Slider />
+                            <Slider Value="{Binding SparkPlugManual}" Maximum="1" Minimum="0"/>
                         </StackPanel>
                         <StackPanel Grid.Row="3">
                             <Label>Топливный клапан</Label>
-                            <Slider />
+                            <Slider Value="{Binding FuelValveManual}" Maximum="1" Minimum="0" />
                         </StackPanel>
                         <StackPanel Grid.Row="4">
                             <Label>Помпа</Label>
-                            <Slider />
+                            <Slider Value="{Binding WaterPumpManual}" Maximum="1" Minimum="0"/>
                         </StackPanel>
                         <StackPanel Grid.Row="5">
                             <Label>Подогрев форсунки</Label>
-                            <Slider />
+                            <Slider Value="{Binding InjectorHEaterManual}" Maximum="1" Minimum="0"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>

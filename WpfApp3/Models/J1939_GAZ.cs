@@ -87,7 +87,10 @@ namespace SFC.Models
         {
             while (true)
             {
-                if (VM.RegularReqHTR == false) return;
+                if (VM.RegularReqHTR == false)
+                {
+                    return;
+                }
                 Thread.Sleep(1000);
                 TxData[0] = (byte)(VM.Tsetpoint+40);
                 TxData[1] = 0xFF;

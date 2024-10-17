@@ -710,10 +710,28 @@ namespace SFC.ViewModels
 
         #region IOControl
 
+        private bool _SessionIOControl_f = false;
+        public bool SessionIOControl_f
+        { set => Set(ref _SessionIOControl_f, value); get => _SessionIOControl_f; }
+
+        private string _ButtonIOControlContent = "Запуск сессии контроля";
+        public string ButtonIOControlContent
+        { set => Set(ref _ButtonIOControlContent, value); get => _ButtonIOControlContent; }
+
         public ICommand StartIOControlCommand { get; }
         private void OnStartIOControlCommandExecuted(object parameter)
         {
-            Protocol.UDS.StartProcessIOControl();
+            if (!_SessionIOControl_f)
+            {
+                _SessionIOControl_f = true;
+                Protocol.UDS.StartProcessIOControl();
+                ButtonIOControlContent = "Завершение сессии контроля";
+            }
+            else
+            {
+                _SessionIOControl_f = false;
+                ButtonIOControlContent = "Запуск сессии контроля";
+            }
         }
 
         private bool CanStartIOControlCommandExecute(object parameter)
@@ -721,8 +739,8 @@ namespace SFC.ViewModels
             return true;
         }
 
-        private int _FanRevManual = 0;
-        public int FanRevManual
+        private ushort _FanRevManual = 0;
+        public ushort FanRevManual
         { set => Set(ref _FanRevManual, value); get => _FanRevManual; }
 
         private bool _SparkPlugManual = false;
@@ -763,7 +781,6 @@ namespace SFC.ViewModels
 
             Protocol.UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
             Protocol.UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);
-
 
             //Protocol.StateProcess = new Progress<short>(status => AddMessageToConsole(status));
         }
