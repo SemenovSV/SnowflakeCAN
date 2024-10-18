@@ -714,7 +714,7 @@ namespace SFC.ViewModels
         public bool SessionIOControl_f
         { set => Set(ref _SessionIOControl_f, value); get => _SessionIOControl_f; }
 
-        private string _ButtonIOControlContent = "Запуск сессии контроля";
+        private string _ButtonIOControlContent = "Запуск сессии управления";
         public string ButtonIOControlContent
         { set => Set(ref _ButtonIOControlContent, value); get => _ButtonIOControlContent; }
 
@@ -725,12 +725,12 @@ namespace SFC.ViewModels
             {
                 _SessionIOControl_f = true;
                 Protocol.UDS.StartProcessIOControl();
-                ButtonIOControlContent = "Завершение сессии контроля";
+                ButtonIOControlContent = "Завершение сессии управления";
             }
             else
             {
                 _SessionIOControl_f = false;
-                ButtonIOControlContent = "Запуск сессии контроля";
+                ButtonIOControlContent = "Запуск сессии управления";
             }
         }
 

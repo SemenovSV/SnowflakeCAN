@@ -316,7 +316,7 @@
                         </StackPanel>
                         <StackPanel Grid.Row="5">
                             <Label>Подогрев форсунки</Label>
-                            <Slider Value="{Binding InjectorHEaterManual}" Maximum="1" Minimum="0"/>
+                            <Slider Value="{Binding InjectorHeaterManual}" Maximum="1" Minimum="0"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
