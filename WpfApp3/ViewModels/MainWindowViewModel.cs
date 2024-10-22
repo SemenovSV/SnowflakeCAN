@@ -22,7 +22,6 @@ using System.IO.Packaging;
 using System.Xml.Linq;
 using System.Collections.ObjectModel;
 using static SFC.ViewModels.MainWindowViewModel;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using System.Xml.Serialization;
 using System.Collections.Specialized;
 
@@ -31,8 +30,6 @@ namespace SFC.ViewModels
 {
     public class MainWindowViewModel : ViewModel, IDisposable
     {
-
-        //public ProtocolUDS UDS;
         public J1939_GAZ Protocol;
         private SynchronizationContext uiContext = SynchronizationContext.Current;
 
@@ -143,13 +140,33 @@ namespace SFC.ViewModels
         {
             return true;
         }
+        #endregion
 
-        /*public void DataReceivedHandler(object sender, SerialDataReceivedEventArgs args)
+        #region Version
+        private string _VersionShort = "";
+        public string VersionShort
+        { set => Set(ref _VersionShort, value); get => _VersionShort; }
+
+        private string _ReleaseDateShort = "";
+        public string ReleaseDateShort
+        { set => Set(ref _ReleaseDateShort, value); get => _ReleaseDateShort; }
+
+        public void SetVersionShort(string _idcode)
         {
-            Protocol.Adapter.Port.Recieve();
-            Protocol.Adapter.ReadBuffer();
-            Protocol.ParseMessage();
-        }*/
+            ReleaseDateShort = "Дата создания: "+_idcode.Substring(0, 2)+"."+_idcode.Substring(2, 2)+"."+_idcode.Substring(4, 2);
+            VersionShort = "Версия: "+_idcode.Substring(6,2)+"."+_idcode.Substring(8, 2);
+        }
+
+        public ICommand GetShortVersionCommand { get; }
+        private void OnGetShortVersionCommandExecuted(object parameter)
+        {
+            Protocol.GetShortVersion();
+        }
+
+        private bool CanGetShortVersionCommandExecute(object parameter)
+        {
+            return true;
+        }
         #endregion
 
         #region FilePath
@@ -292,7 +309,7 @@ namespace SFC.ViewModels
         public int Tsetpoint
         { set => Set(ref _Tsetpoint, value); get => _Tsetpoint; }
 
-        private int _WorkTime = 10;
+        private int _WorkTime = 120;
         public int WorkTime
         { set => Set(ref _WorkTime, value); get => _WorkTime; }
 
@@ -563,6 +580,7 @@ namespace SFC.ViewModels
             switch (id)
             {
                 case "18FE6D3A":
+                case "18FE6D19":
                 case "18FE6D44": return "HTR";
                 case "18FE44F7":
                 case "18FEF744": return "VEP";
@@ -572,6 +590,7 @@ namespace SFC.ViewModels
                 case "18FECA44": return "DM1";
                 case "18DA44F1":
                 case "18DAF144": return "UDS";
+                case "18EA44F9": return "RQST";
             }
             return "";
         }
@@ -761,6 +780,11 @@ namespace SFC.ViewModels
 
         #endregion
 
+        #region Graph
+
+
+        #endregion
+
         public MainWindowViewModel()
         {
             Protocol = new J1939_GAZ(this);
@@ -778,6 +802,7 @@ namespace SFC.ViewModels
             SaveTerminalLogCommand = new LambdaCommand(OnSaveTerminalLogCommandExecuted, CanSaveTerminalLogCommandExecute);
             ClearTerminalCommand = new LambdaCommand(OnClearTerminalCommandExecuted, CanClearTerminalCommandExecute);
             StartIOControlCommand = new LambdaCommand(OnStartIOControlCommandExecuted, CanStartIOControlCommandExecute);
+            GetShortVersionCommand = new LambdaCommand(OnGetShortVersionCommandExecuted, CanGetShortVersionCommandExecute);
 
             Protocol.UDS.LoadProgress = new Progress<ushort>(status => LoadProgress = status);
             Protocol.UDS.LoadTimeS = new Progress<uint>(status => LoadTimeS = status);

@@ -10,13 +10,12 @@
     <ApplicationIcon>snowflake.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CoreCLR-NCalc" Version="2.2.113" />
-	<PackageReference Include="LiveCharts.Wpf.NetCore3" Version="0.9.8" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 	<PackageReference Include="System.IO.Ports" Version="7.0.0" />
 	<Compile Remove="Models\Parameters.cs" />

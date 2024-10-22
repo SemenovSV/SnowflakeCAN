@@ -24,13 +24,13 @@
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="250"/>
                             <ColumnDefinition Width="400"/>
                         </Grid.ColumnDefinitions>
-
-                        <StackPanel Grid.Column="0">
+                        <GroupBox Header="Адаптер" Grid.Column="0">
                             <Grid>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="60"/>
                                     <RowDefinition Height="60"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -44,22 +44,29 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </ComboBox>
-                                <Button x:Name="buttonCOM" Padding="2" Content="{Binding Path=ButPortContent}" Command="{Binding OpenPortCommand}" Grid.Column="1"   Margin="15,15,15,15" IsEnabled="{Binding EnableAction}" />
-                            </Grid>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1">
+                                    <Button x:Name="buttonCOM" Padding="2" Content="{Binding Path=ButPortContent}" Command="{Binding OpenPortCommand}" Grid.Column="1"   Margin="15,15,15,15" IsEnabled="{Binding EnableAction}" />
+
+                                    <ComboBox Name="BaudrateList" Grid.Row="1" ItemsSource="{Binding BaudrateList}" SelectedIndex="{Binding BaudrateIndex}" Margin="15,15,15,15"/>
+                                    <Button Name="buttonBaudrate" Grid.Row="1" Grid.Column="1" Content="Задать" Command="{Binding SetBaudrateCommand}" Margin="15,15,15,15"/>
+                                </Grid>
+                        </GroupBox>
+                        <GroupBox Header="Профиль" Grid.Column="1">
                             <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="60"/>
-                                </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="200"/>
                                 </Grid.ColumnDefinitions>
-                                <ComboBox Name="BaudrateList" ItemsSource="{Binding BaudrateList}" SelectedIndex="{Binding BaudrateIndex}" Margin="15,15,15,15"/>
-                                <Button Name="buttonBaudrate"  Grid.Column="1" Content="Задать" Command="{Binding SetBaudrateCommand}" Margin="15,15,15,15"/>
+                                <Button  Content ="Версия ПО" Grid.Column="0" Command="{Binding GetShortVersionCommand}" Grid.Row="1"  Margin="10,40,10,40" IsEnabled="{Binding EnableAction}"/>
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="60"/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Name="tbVersionShort" TextWrapping="Wrap" Text="{Binding VersionShort}"  Grid.Row="0" Margin="10,5,10,5"/>
+                                    <TextBlock Name="tbReleaseDateShort" TextWrapping="Wrap" Text="{Binding ReleaseDateShort}" Grid.Row="1" Margin="10,5,10,5"/>
+                                </Grid>
                             </Grid>
-                        </StackPanel>
+                    </GroupBox>
                     </Grid>
                 </StackPanel>
             </TabItem>
@@ -68,35 +75,33 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="80"/>
-                            <RowDefinition Height="540"/>
+                            <RowDefinition Height="400"/>
+                            <RowDefinition Height="140"/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0">
                             <Border BorderBrush="Gray" BorderThickness="1" Margin="1,1,1,1">
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="35"/>
                                         <RowDefinition Height="40"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="140"/>
-                                        <ColumnDefinition Width="160"/>
-                                        <ColumnDefinition Width="160"/>
-                                        <ColumnDefinition Width="160"/>
-                                        <ColumnDefinition Width="160"/>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Name = "cbRegularReqHTR" Content="Отправка HTR"  HorizontalAlignment="Left"  VerticalAlignment="Center" IsChecked="{Binding RegularReqHTR}" Command="{Binding RegularReqHTRCommand}" Margin="5,5,5,5"/>
                                     <CheckBox Name ="cdReqUDS" Content="Запрос UDS" HorizontalAlignment="Left"  Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding RegularReqUDS}" Command="{Binding RegularReqUDSCommand}" Margin="5,5,5,5"/>
                                     <Label  Grid.Column="1" Content="Режим работы:" HorizontalAlignment="Center"></Label>
-                                    <ComboBox Name ="comBoxWorkMode"  Grid.Column="1" ItemsSource="{Binding WorkModeList}" Grid.Row="1" Margin="5,5,5,5" SelectedIndex="{Binding ModeIndex}"/>
-                                    <Label  Grid.Column="2" Content="Уставка тем-ры, °С:" HorizontalAlignment="Center"></Label>
-                                    <TextBox Name="tbTsetpoint" TextWrapping="Wrap" Text="{Binding Tsetpoint}" Grid.Column="2" Grid.Row="1" Margin="5,5,5,5"/>
+                                    <ComboBox Name ="comBoxWorkMode"  Grid.Column="1" ItemsSource="{Binding WorkModeList}" Grid.Row="1" Margin="10,5,10,5" SelectedIndex="{Binding ModeIndex}"/>
+                                    <Label  Grid.Column="2" Content="Уставка температуры, °С:" HorizontalAlignment="Center"></Label>
+                                    <TextBox Name="tbTsetpoint" TextWrapping="Wrap" Text="{Binding Tsetpoint}" Grid.Column="2" Grid.Row="1" Margin="10,5,10,5"/>
                                     <Label  Grid.Column="3" Content="Время работы, мин.:" HorizontalAlignment="Center"></Label>
-                                    <TextBox Name="tbWorkTime" TextWrapping="Wrap" Text="{Binding WorkTime}" Grid.Column="3" Grid.Row="1" Margin="5,5,5,5"/>
-
-                                    <Label  Grid.Column="4" Content="Запрос RQST:" HorizontalAlignment="Center"></Label>
-                                    <TextBox Name ="tbReqPGN"   TextWrapping="Wrap" Text="{Binding ReqPGN}" Grid.Column="4" Grid.Row="1" Margin="5,5,70,5"/>
-                                    <Button  Content ="Запрос" Grid.Column="4" Grid.Row="1" Margin="95,5,5,5"></Button>
+                                    <TextBox Name="tbWorkTime" TextWrapping="Wrap" Text="{Binding WorkTime}" Grid.Column="3" Grid.Row="1" Margin="10,5,10,5"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
@@ -151,10 +156,6 @@
                             </Grid>
                         </StackPanel>
                         <StackPanel Grid.Row="3">
-                            <Grid>
-                            </Grid>
-                        </StackPanel>
-                        <StackPanel Grid.Row="4">
                             <Grid>
                                 <TextBox Text="{Binding FooterState}" Grid.ColumnSpan="2"/>
                             </Grid>
@@ -258,7 +259,7 @@
                                         <ColumnDefinition Width="200"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <ScrollViewer Name="TermScroll" Height="140" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" ScrollChanged="TermScroll_ScrollChanged">
+                                        <ScrollViewer Name="TermScroll" Height="140" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" ScrollChanged="TermScroll_ScrollChanged" VirtualizingStackPanel.IsVirtualizing="True">
                                             <ListBox ItemsSource="{Binding MessageLog}" VirtualizingStackPanel.IsVirtualizing="True"/>
                                         </ScrollViewer>
                                     </StackPanel>
@@ -374,6 +375,9 @@
                         </StackPanel>
                     </Grid>
                 </StackPanel>
+            </TabItem>
+            <TabItem Header="ДД" FontSize="16">
+                
             </TabItem>
         </TabControl>
 

@@ -44,7 +44,7 @@ namespace SFC.Models
                 if(VM.ParamsJ1939[0].Value!=null) VM.ParamsJ1939[0].Value = Convert.ToString(Adapter.RxData[0]-40);
                 VM.ParamsJ1939[1].Value = Convert.ToString(Adapter.RxData[2]);
                 VM.ParamsJ1939[2].Value = Convert.ToString(Adapter.RxData[3]);
-                VM.ParamsJ1939[3].Value = Convert.ToString((Adapter.RxData[6]<<8)+Adapter.RxData[7]);
+                VM.ParamsJ1939[3].Value = Convert.ToString((Adapter.RxData[7]<<8)+Adapter.RxData[6]);
             }
             else if(Adapter.Id == "18FEF744")//VEP
             {
@@ -52,7 +52,8 @@ namespace SFC.Models
             }
             else if(Adapter.Id == "18FEF944")//SOFT
             {
-
+                uint _idcode = (uint)((Adapter.RxData[1]<<24)+(Adapter.RxData[2]<<16)+(Adapter.RxData[3]<<8)+Adapter.RxData[4]);
+                VM.SetVersionShort(_idcode.ToString());
             }
             else if (Adapter.Id == "18FECA44")//DM1
             {
@@ -98,8 +99,8 @@ namespace SFC.Models
                 TxData[3] = (byte)VM.WorkMode;
                 TxData[4] = 0xFF;
                 TxData[5] = 0xFF;
-                TxData[6] = (byte)(VM.WorkTime/10);
-                TxData[7] = 0xFF;
+                TxData[6] = (byte)(VM.WorkTime);
+                TxData[7] = (byte)(VM.WorkTime>>8);
 
                 SendMessage("18FE6D3A", TxData);
             }
@@ -177,6 +178,20 @@ namespace SFC.Models
             Adapter.SendMessage(_id, _data);
             VM.AddMessageToTxTerminal(_id, _data);
             VM.AddMessageToMessageLog(DateTime.Now.ToString("HH:mm:ss:fff")+"   Tx>> "+_id +" |   "+Convert.ToHexString(_data));
+        }
+
+        public void GetShortVersion()
+        {
+            TxData[0] = 0;
+            TxData[1] = 254;
+            TxData[2] = 249;
+            TxData[3] = 0xFF;
+            TxData[4] = 0xFF;
+            TxData[5] = 0xFF;
+            TxData[6] = 0xFF;
+            TxData[7] = 0xFF;
+
+            SendMessage("18EA44F9", TxData);
         }
     }
 }

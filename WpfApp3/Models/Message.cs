@@ -4,8 +4,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
-
 namespace SFC.Models
 {
     public class Message : ObservableObject
