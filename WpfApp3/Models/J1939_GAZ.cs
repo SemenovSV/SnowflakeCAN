@@ -161,10 +161,15 @@ namespace SFC.Models
                     case (0<<19)+858: code = 22; break;
                     case (0<<19)+859: code = 24; break;
                     case (6<<19)+860: code = 29; break;
+                    case (16<<19)+861: code = 16; break;
+                    case (5<<19)+862: code = 22; break;//ToDo
+                    case (6<<19)+862: code = 24; break;//ToDo
+                    case (12<<19)+863: code = 6; break;
+                    case (12<<19)+864: code = 18; break;
                     case (12<<19)+1044: code = 14; break;
                     case (12<<19)+1442: code = 17; break;
                     case (0<<19)+1677: code = 37; break;
-                    case (0<<12)+1687: code = 4; break;
+                    case (12<<19)+1687: code = 4; break;
                     case (0<<19)+10760: code = 90; break;
                     default: code = (uint)_spnfmi; break;
                 }

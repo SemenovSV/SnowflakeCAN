@@ -360,7 +360,24 @@ namespace SFC.ViewModels
             new Param("Клапан"),
             new Param("ТЭН"),
             new Param("Индикатор пламени"),
-            new Param("Помпа"),
+            new Param("Помпа")
+
+            //ToDo сделать автозагрузку профиля 
+            /*new Param("Стадия "),
+            new Param("Режим "),
+            new Param("Время работы"),
+            new Param("Время режима"),
+            new Param("Обороты зад"),
+            new Param("Обороты изм"),
+            new Param("Т перегрева"),
+            new Param("Свеча"),
+            new Param("Клапан ВД"),
+            new Param("Клапан отсечной"),
+            new Param("Клапан сильный"),
+            new Param("Клапан малый"),
+            new Param("Зонд"),
+            new Param("Индикатор пламени"),
+            new Param("Помпа"),*/
         };
         public ObservableCollection<Param> ParamsUDS
         { set => Set(ref _ParamsUDS, value); get => _ParamsUDS; }
@@ -499,43 +516,58 @@ namespace SFC.ViewModels
                         FooterState += "датчик перегрева";
                         break;
                     case 4:
-                        FooterState += "датчик температуры";
+                        FooterState += "датчик температуры жидкости";
+                        break;
+                    case 5:
+                        FooterState += "обрыв индикатора пламени";
+                        break;
+                    case 6:
+                        FooterState += "датчик температуры блока управления";
                         break;
                     case 8:
                         FooterState += "срывы пламени в работе";
                         break;
-                    case 13:
-                        FooterState += "нерозжиг";
+                    case 9:
+                        FooterState += "блок искрового розжига или свеча накаливания";
                         break;
                     case 10:
                         FooterState += "несоответствие оборотов";
+                        break;
+                    case 11:
+                        FooterState += "отсечной клапан";
+                        break;
+                    case 12:
+                        FooterState += "повышенное напряжение";
+                        break;
+                    case 13:
+                        FooterState += "нерозжиг";
+                        break;
+                    case 14:
+                        FooterState += "помпа";
+                        break;
+                    case 15:
+                        FooterState += "пониженное напряжение";
+                        break;
+                    case 16:
+                        FooterState += "индикатор пламени не остыл";
+                        break;
+                    case 17:
+                        FooterState += "топливный клапан или топливный насос";
+                        break;
+                    case 18:
+                        FooterState += "клапан высокого давления";
+                        break;
+                    case 22:
+                        FooterState += "пламя есть до розжига или неисправен зонд(обрыв)";
+                        break;
+                    case 24:
+                        FooterState += "пламя есть после продувки или неисправен зонд (КЗ)";
                         break;
                     case 27:
                         FooterState += "нет вращения";
                         break;
                     case 28:
                         FooterState += "самовращение";
-                        break;
-                    case 9:
-                        FooterState += "блок искрового розжига";
-                        break;
-                    case 14:
-                        FooterState += "помпа";
-                        break;
-                    case 17:
-                        FooterState += "топливный клапан";
-                        break;
-                    case 12:
-                        FooterState += "повышенное напряжение";
-                        break;
-                    case 15:
-                        FooterState += "пониженное напряжение";
-                        break;
-                    case 22:
-                        FooterState += "пламя есть до розжига";
-                        break;
-                    case 24:
-                        FooterState += "пламя есть после продувки";
                         break;
                     case 29:
                         FooterState += "КЗ ТЭН";

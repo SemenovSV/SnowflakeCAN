@@ -260,7 +260,7 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
                                         <ScrollViewer Name="TermScroll" Height="140" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" ScrollChanged="TermScroll_ScrollChanged" VirtualizingStackPanel.IsVirtualizing="True">
-                                            <ListBox ItemsSource="{Binding MessageLog}" VirtualizingStackPanel.IsVirtualizing="True"/>
+                                            <!--<ListBox ItemsSource="{Binding MessageLog}" VirtualizingStackPanel.IsVirtualizing="True"/>-->
                                         </ScrollViewer>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
