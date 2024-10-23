@@ -24,6 +24,7 @@ using System.Collections.ObjectModel;
 using static SFC.ViewModels.MainWindowViewModel;
 using System.Xml.Serialization;
 using System.Collections.Specialized;
+using System.Reflection.Metadata;
 
 
 namespace SFC.ViewModels
@@ -329,6 +330,15 @@ namespace SFC.ViewModels
                 _Name = _name;
                 _Value = _value;
             }
+            public Param(uint _index, string _name, string _value)
+            {
+                _Index = _index;
+                _Name = _name;
+                _Value = _value;
+            }
+            private uint _Index;
+            public uint Index { get => _Index; set { _Index = value; RaisePropertyChangedEvent(nameof(Index)); } }
+
             private string _Name;
             public string Name { get => _Name; set { _Name = value; RaisePropertyChangedEvent(nameof(Name)); } }
 
@@ -347,40 +357,93 @@ namespace SFC.ViewModels
         { set => Set(ref _ParamsJ1939, value); get => _ParamsJ1939; }
 
 
-        private ObservableCollection<Param> _ParamsUDS = new ObservableCollection<Param>()
-        {
-            new Param("Стадия "),
-            new Param("Режим "),
-            new Param("Время работы"),
-            new Param("Время режима"),
-            new Param("Обороты зад"),
-            new Param("Обороты изм"),
-            new Param("Т перегрева"),
-            new Param("Искра"),
-            new Param("Клапан"),
-            new Param("ТЭН"),
-            new Param("Индикатор пламени"),
-            new Param("Помпа")
+        private ObservableCollection<Param> _ParamsUDS = new ObservableCollection<Param>() { };
+/*        {
+            new Param("Стадия "),               //0
+            new Param("Режим "),                //1
+            new Param("Время работы"),          //2
+            new Param("Время режима"),          //3
+            new Param("Обороты зад"),           //4
+            new Param("Обороты изм"),           //5
+            new Param("Т перегрева"),           //6
+            new Param("Искра"),                 //7
+            new Param("Клапан"),                //8
+            new Param("ТЭН"),                   //9
+            new Param("Индикатор пламени"),     //10
+            new Param("Помпа")                  //11
 
-            //ToDo сделать автозагрузку профиля 
-            /*new Param("Стадия "),
-            new Param("Режим "),
-            new Param("Время работы"),
-            new Param("Время режима"),
-            new Param("Обороты зад"),
-            new Param("Обороты изм"),
-            new Param("Т перегрева"),
-            new Param("Свеча"),
-            new Param("Клапан ВД"),
-            new Param("Клапан отсечной"),
-            new Param("Клапан сильный"),
-            new Param("Клапан малый"),
-            new Param("Зонд"),
-            new Param("Индикатор пламени"),
-            new Param("Помпа"),*/
-        };
+            //ToDo сделать автозагрузку профиля             
+            new Param("Стадия "),               //0
+            new Param("Режим "),                //1
+            new Param("Время работы"),          //2
+            new Param("Время режима"),          //3
+            new Param("Температура ИП"),        //4
+            new Param("Обороты зад"),           //5
+            new Param("Обороты изм"),           //6
+            new Param("Т перегрева"),           //7
+            new Param("Свеча"),                 //8
+            new Param("Помпа"),                 //9
+            new Param("Клапан ВД"),             //10
+            new Param("Клапан отсечной"),       //11
+            new Param("Клапан розжигной"),      //12
+            new Param("Клапан малого"),         //13
+            new Param("Клапан сильного"),       //14
+            new Param("Зонд")                  //15
+
+        };*/
         public ObservableCollection<Param> ParamsUDS
         { set => Set(ref _ParamsUDS, value); get => _ParamsUDS; }
+
+        public void AddParameterToGrid(uint _index, string _value)
+        {
+            Param p = new Param(_index, GetParamName(_index), _value);
+            foreach (Param _p in ParamsUDS)
+            {
+                if (_p.Index == p.Index)
+                {
+                    _p.Value = _value;
+                    return;
+                }
+
+            }
+            uiContext.Send(x => ParamsUDS.Add(p), null);
+        }
+
+        string GetParamName(uint _index)
+        {
+            switch (_index)
+            {
+                case 1: return "Стадия ";
+                case 2: return "Режим ";
+                case 3: return "Время работы ";
+                case 4: return "Время режима ";
+                case 5: return "Напряжение питания ";
+                case 6: return "Температура ИП ";
+                case 15: return "Обороты заданные ";
+                case 16: return "Обороты измеренные ";
+                case 17: return "Частота ТН ";
+                case 24: return "Код неисправности ";
+                case 40: return "Температура жидкости ";
+                case 41: return "Температура перегрева ";
+                case 59: return "Температура БУ ";
+                case 62: return "Свеча ";
+                case 63: return "Длительность импульса ШИМ ";
+                case 71: return "Давление ";
+                case 72: return "Ток основной ";
+                case 77: return "Искра ";
+                case 78: return "Топливный клапан ";
+                case 79: return "ТЭН ";
+                case 83: return "Фотодиод ";
+                case 84: return "Помпа ";
+                case 85: return "Клапан ВД ";
+                case 86: return "Клапан отсечной ";
+                case 87: return "Клапан розжигной";
+                case 88: return "Клапан малый";
+                case 89: return "Клапан сильный";
+                case 95: return "Зонд";
+            }
+            return "Undefined";
+        }
 
         private ObservableCollection<Param> _ParamsDM1 = new ObservableCollection<Param>()
         {
