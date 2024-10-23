@@ -358,39 +358,7 @@ namespace SFC.ViewModels
 
 
         private ObservableCollection<Param> _ParamsUDS = new ObservableCollection<Param>() { };
-/*        {
-            new Param("Стадия "),               //0
-            new Param("Режим "),                //1
-            new Param("Время работы"),          //2
-            new Param("Время режима"),          //3
-            new Param("Обороты зад"),           //4
-            new Param("Обороты изм"),           //5
-            new Param("Т перегрева"),           //6
-            new Param("Искра"),                 //7
-            new Param("Клапан"),                //8
-            new Param("ТЭН"),                   //9
-            new Param("Индикатор пламени"),     //10
-            new Param("Помпа")                  //11
 
-            //ToDo сделать автозагрузку профиля             
-            new Param("Стадия "),               //0
-            new Param("Режим "),                //1
-            new Param("Время работы"),          //2
-            new Param("Время режима"),          //3
-            new Param("Температура ИП"),        //4
-            new Param("Обороты зад"),           //5
-            new Param("Обороты изм"),           //6
-            new Param("Т перегрева"),           //7
-            new Param("Свеча"),                 //8
-            new Param("Помпа"),                 //9
-            new Param("Клапан ВД"),             //10
-            new Param("Клапан отсечной"),       //11
-            new Param("Клапан розжигной"),      //12
-            new Param("Клапан малого"),         //13
-            new Param("Клапан сильного"),       //14
-            new Param("Зонд")                  //15
-
-        };*/
         public ObservableCollection<Param> ParamsUDS
         { set => Set(ref _ParamsUDS, value); get => _ParamsUDS; }
 

@@ -24,7 +24,7 @@ namespace SFC.Models
 
         byte[] TxData = new byte[8];
 
-        static uint[] UDSReqList = { 1, 3, 4, 15, 16, 41, 77, 78, 79, 83, 84 };
+        static uint[] UDSReqList = { 1, 2, 3, 4, 15, 16, 41, 77, 78, 79, 83, 84 };
         //static uint[] UDSReqList = { 1, 3, 4, 6, 15, 16, 41, 62, 84, 85, 86, 87, 88, 89, 95 }; //ToDo Сделать считывание из профиля
 
         public J1939_GAZ(MainWindowViewModel parent)

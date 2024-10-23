@@ -139,7 +139,7 @@ namespace SFC.Models
                 }
                 else if (Service == SERVICE_READ_DATA_BY_ID+0x40)
                 {
-                        string _value = "";
+                    string _value = "";
                     if (message[3]==1)//stage/mode
                     {
                         _value = Convert.ToString(message[4]);
@@ -149,91 +149,21 @@ namespace SFC.Models
                     {
                         _value = Convert.ToString(((message[4]<<8)+message[5])*60+message[6]);
                     }
-                    else if (message[3]==4)//mode time
-                    {
-                        _value = Convert.ToString((message[4]<<8)+message[5]);
-                    }
-                    else if (message[3]==15)//rev defined
-                    {
-                        _value = Convert.ToString(message[4]);
-                    }
-                    else if (message[3]==16)//rev measured
-                    {
-                        _value = Convert.ToString(message[4]);
-                    }
                     else if (message[3]==41)// T overheat
                     {
                         _value = Convert.ToString(message[4]-40);
                     }
-                    else if (message[3]==77)//spark plug
+                    else //tupical parsing, for other
                     {
-                        _value = Convert.ToString(message[4]);
-                    }
-                    else if (message[3]==78)//fuel valve
-                    {
-                        _value = Convert.ToString(message[4]);
-                    }
-                    else if (message[3]==79)//injector heater
-                    {
-                        _value = Convert.ToString(message[4]);
-                    }
-                    else if (message[3]==83)//photodiode
-                    {
-                        _value = Convert.ToString((message[4]<<8)+message[5]);
-                    }
-                    else if (message[3]==84)//water pump
-                    {
-                        _value = Convert.ToString(message[4]);
+                        uint _val = 0;
+                        for (byte i =0; i<=message[0]-4; i++)
+                        {
+                            _val += (uint)(message[i+4]<<(8*(message[0]-i)));
+                        }
+                        _value = Convert.ToString(_val);
                     }
 
                     Parent.VM.AddParameterToGrid(message[3], _value);
-
-                    /*if (message[3]==1)//stage/mode
-                    {
-                        Parent.VM.ParamsUDS[0].Value = Convert.ToString(message[4]);
-                        Parent.VM.ParamsUDS[1].Value = Convert.ToString(message[5]);
-                        Parent.VM.SetFooterState(message[4], message[5], 255);
-                    }
-                    else if (message[3]==3)//work time
-                    {
-                        Parent.VM.ParamsUDS[2].Value = Convert.ToString(((message[4]<<8)+message[5])*60+message[6]);
-                    }
-                    else if (message[3]==4)//mode time
-                    {
-                        Parent.VM.ParamsUDS[3].Value = Convert.ToString((message[4]<<8)+message[5]);
-                    }
-                    else if (message[3]==15)//rev defined
-                    {
-                        Parent.VM.ParamsUDS[4].Value = Convert.ToString(message[4]);
-                    }
-                    else if (message[3]==16)//rev measured
-                    {
-                        Parent.VM.ParamsUDS[5].Value = Convert.ToString(message[4]);
-                    }
-                    else if (message[3]==41)// T overheat
-                    {
-                        Parent.VM.ParamsUDS[6].Value = Convert.ToString(message[4]-40);
-                    }
-                    else if (message[3]==77)//spark plug
-                    {
-                        Parent.VM.ParamsUDS[7].Value = Convert.ToString(message[4]);
-                    }
-                    else if (message[3]==78)//fuel valve
-                    {
-                        Parent.VM.ParamsUDS[8].Value = Convert.ToString(message[4]);
-                    }
-                    else if (message[3]==79)//injector heater
-                    {
-                        Parent.VM.ParamsUDS[9].Value = Convert.ToString(message[4]);
-                    }
-                    else if (message[3]==83)//photodiode
-                    {
-                        Parent.VM.ParamsUDS[10].Value = Convert.ToString((message[4]<<8)+message[5]);
-                    }
-                    else if (message[3]==84)//water pump
-                    {
-                        Parent.VM.ParamsUDS[11].Value = Convert.ToString(message[4]);
-                    }*/
                 }
                 else if (Service == SERVICE_SECURITY_ACCESS+0x40)
                 {
