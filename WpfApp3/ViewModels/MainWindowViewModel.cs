@@ -478,30 +478,87 @@ namespace SFC.ViewModels
                 }
                 if (s_stage == 2)
                 {
+                    if (s_mode == 0)
+                    {
+                        FooterState = "Подготовка камеры сгорания(2:0)";//gas
+                    }
                     if (s_mode == 1)
                     {
-                        FooterState = "Розжиг 1 (2:1)";
+                        //FooterState = "Розжиг 1 (2:1)";
+                        FooterState = "Разогрев свечи (2:1)";//gas
+                    }
+                    if (s_mode == 2)
+                    {
+                        FooterState = "Подготовка к розжигу (2:2)";//gas
                     }
                     else if (s_mode == 3)
                     {
-                        FooterState = "Розжиг 2 (2:3)";
+                        //FooterState = "Розжиг 2 (2:3)";
+                        FooterState = "Розжиг 1 (2:3)";//gas
+                    }
+                    else if (s_mode == 4)
+                    {
+                        FooterState = "Продувка при срыве пламени (2:4)";//gas
+                    }
+                    else if (s_mode == 5)
+                    {
+                        FooterState = "Прогрев камеры сгорания (2:5)";//gas
+                    }
+                    else if (s_mode == 6)
+                    {
+                        FooterState = "Продувка обычная (2:6)";//gas
                     }
                     else if (s_mode == 7)
                     {
-                        FooterState = "Подготовка к розжигу (2:7)";
+                        //FooterState = "Подготовка к розжигу (2:7)";
+                        FooterState = "Проверка пламени по ИП (2:7)";//gas
                     }
                     else if (s_mode == 8)
                     {
-                        FooterState = "Альтернативный розжиг 1 (2:8)";
+                        //FooterState = "Альтернативный розжиг 1 (2:8)";
+                        FooterState = "Сушка зонда (2:8)";//gas
                     }
                     else if (s_mode == 9)
                     {
-                        FooterState = "Альтернативный розжиг 2 (2:9)";
+                        //FooterState = "Альтернативный розжиг 2 (2:9)";
+                        FooterState = "Ждущий перед розжигом (2:9)";//gas
                     }
                 }
                 if (s_stage == 3)
                 {
-                    if (s_mode == 59)
+                    if (s_mode == 0)
+                    {
+                        FooterState = "Малый (3:0)";//gas
+                    }
+                    else if (s_mode == 1)
+                    {
+                        FooterState = "Малый-сильный (3:1)";//gas
+                    }
+                    else if (s_mode == 2)
+                    {
+                        FooterState = "Сильный (3:2)";//gas
+                    }
+                    else if (s_mode == 3)
+                    {
+                        FooterState = "Сильный-малый (3:3)";//gas
+                    }
+                    else if (s_mode == 4)
+                    {
+                        FooterState = "Продувка обычная (3:4)";//gas
+                    }
+                    else if (s_mode == 5)
+                    {
+                        FooterState = "Ждущий в работе (3:5)";//gas
+                    }
+                    else if (s_mode == 6)
+                    {
+                        FooterState = "Продувка при срыве пламени (3:6)";//gas
+                    }
+                    else if (s_mode == 7)
+                    {
+                        FooterState = "Только помпа (3:5)";//gas
+                    }
+                    else if (s_mode == 59)
                     {
                         FooterState = "Нагрев на максимальной ступени (3:59)";
                     }
@@ -527,6 +584,10 @@ namespace SFC.ViewModels
                     else if (s_mode == 1)
                     {
                         FooterState = "Продувка при перегреве (4:1)";
+                    }
+                    else if (s_mode == 2)
+                    {
+                        FooterState = "Продувка при неисправности ИП (4:5)";//gas
                     }
                     else if (s_mode == 6)
                     {

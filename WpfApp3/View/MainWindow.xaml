@@ -75,8 +75,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="80"/>
-                            <RowDefinition Height="400"/>
-                            <RowDefinition Height="140"/>
+                            <RowDefinition Height="540"/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0">
