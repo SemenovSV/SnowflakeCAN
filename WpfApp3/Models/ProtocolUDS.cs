@@ -477,9 +477,12 @@ namespace SFC.Models
             {
                 ReceiverId = 0x44;
             }
-            else if(version[0] == 2)//MAZ Planar 2
+            else if(version[0] == 2)//Planar 2
             {
-                ReceiverId = 0x44;
+                if(version[2] == 21)
+                    ReceiverId = 0x44;
+                else
+                    ReceiverId = 0x45;
             }
             else if(version[0] == 1)//KAMAZ 14TS-mini
             {
