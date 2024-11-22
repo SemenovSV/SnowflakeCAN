@@ -25,7 +25,7 @@ namespace SFC.Models
         byte[] TxData = new byte[8];
 
         //static uint[] UDSReqList = { 1, 2, 3, 4, 15, 16, 41, 77, 78, 79, 83, 84 };
-        static uint[] UDSReqList = { 1, 2, 3, 4, 6, 15, 16, 41, 62, 84, 85, 86, 87, 88, 89, 95 }; //ToDo Сделать считывание из профиля <---Для 30TSG
+        static uint[] UDSReqList = { 1, 2, 3, 4, 6, 15, 16, 41, 62, 84, 85, 86, 87, 88, 89, 95, 63 }; //ToDo Сделать считывание из профиля <---Для 30TSG
 
         public J1939_GAZ(MainWindowViewModel parent)
         {
@@ -51,7 +51,7 @@ namespace SFC.Models
             {
                 VM.ParamsVEP[0].Value = Convert.ToString((Adapter.RxData[4]+(Adapter.RxData[5]<<8))/20.0);
             }
-            else if(Adapter.Id == "18FEF944")//SOFT
+            else if(Adapter.Id == "18FEDA44")//SOFT
             {
                 uint _idcode = (uint)((Adapter.RxData[1]<<24)+(Adapter.RxData[2]<<16)+(Adapter.RxData[3]<<8)+Adapter.RxData[4]);
                 VM.SetVersionShort(_idcode.ToString());
@@ -150,28 +150,39 @@ namespace SFC.Models
             {
                 switch (_spnfmi)
                 {
-                    case (3<<19)+168: code = 12; break;
-                    case (4<<19)+168: code = 15; break;
-                    case (0<<19)+854: code = 1; break;
-                    case (12<<19)+854: code = 3; break;
-                    case (5<<19)+855: code = 5; break;
-                    case (12<<19)+856: code = 9; break;
+                    case (3 <<19)+168: code = 12; break;
+                    case (4 <<19)+168: code = 15; break;
+                    case (0 <<19)+854: code = 1;  break;
+                    case (12<<19)+854: code = 3;  break;
+                    case (5 <<19)+855: code = 5;  break;
+                    case (5 <<19)+856:
+                    case (6 <<19)+856:
+                    case (12<<19)+856: code = 9;  break;
                     case (18<<19)+857: code = 10; break;
-                    case (1<<19)+857: code = 27; break;
-                    case (0<<19)+857: code = 28; break;
-                    case (0<<19)+858: code = 22; break;
-                    case (0<<19)+859: code = 24; break;
-                    case (6<<19)+860: code = 29; break;
+                    case (1 <<19)+857: code = 27; break;
+                    case (0 <<19)+857: code = 28; break;
+                    case (0 <<19)+858: code = 22; break;
+                    case (0 <<19)+859: code = 24; break;
+                    case (6 <<19)+860: code = 29; break;
                     case (16<<19)+861: code = 16; break;
-                    case (5<<19)+862: code = 22; break;//ToDo
-                    case (6<<19)+862: code = 24; break;//ToDo
-                    case (12<<19)+863: code = 6; break;
+                    case (5 <<19)+862: code = 22; break;//ToDo
+                    case (6 <<19)+862: code = 24; break;//ToDo
+                    case (12<<19)+863: code = 6;  break;
+                    case (5 <<19)+864:
+                    case (6 <<19)+864:
                     case (12<<19)+864: code = 18; break;
+                    case (16<<19)+865: code = 8;  break;
+                    case (5 <<19)+866:
+                    case (6 <<19)+866:
+                    case (12<<19)+866: code = 17; break;
+                    case (5 <<19)+1044:
+                    case (6 <<19)+1044:
                     case (12<<19)+1044: code = 14; break;
-                    case (12<<19)+1442: code = 17; break;
-                    case (0<<19)+1677: code = 37; break;
-                    case (12<<19)+1687: code = 4; break;
-                    case (0<<19)+10760: code = 90; break;
+                    case (12<<19)+1442: code = 11; break;
+                    case (16<<19)+1677: code = 13; break;
+                    case (0 <<19)+1677: code = 37; break;
+                    case (12<<19)+1687: code = 4;  break;
+                    case (0 <<19)+10760: code = 90;break;
                     default: code = (uint)_spnfmi; break;
                 }
             }
@@ -189,8 +200,8 @@ namespace SFC.Models
         public void GetShortVersion()
         {
             TxData[0] = 0;
-            TxData[1] = 254;
-            TxData[2] = 249;
+            TxData[1] = 0xFE;
+            TxData[2] = 0xDA;
             TxData[3] = 0xFF;
             TxData[4] = 0xFF;
             TxData[5] = 0xFF;

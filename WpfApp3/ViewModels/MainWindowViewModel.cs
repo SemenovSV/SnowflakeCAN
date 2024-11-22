@@ -408,7 +408,7 @@ namespace SFC.ViewModels
                 case 87: return "Клапан розжигной";
                 case 88: return "Клапан малый";
                 case 89: return "Клапан сильный";
-                case 95: return "Зонд";
+                case 95: return "Счётчик зонда";
             }
             return "Undefined";
         }
@@ -709,7 +709,7 @@ namespace SFC.ViewModels
                 case "18FE44F7":
                 case "18FEF744": return "VEP";
                 case "18FE44F9":
-                case "18FEF944": return "SOFT";
+                case "18FEDA44": return "SOFT";
                 case "18FE44CA":
                 case "18FECA44": return "DM1";
                 case "18DA44F1":

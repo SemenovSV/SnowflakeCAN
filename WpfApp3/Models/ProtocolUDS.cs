@@ -149,6 +149,10 @@ namespace SFC.Models
                     {
                         _value = Convert.ToString(((message[4]<<8)+message[5])*60+message[6]);
                     }
+                    else if (message[3]==6)// T flame
+                    {
+                        _value = Convert.ToString((message[4]*256)+message[5]-273);
+                    }
                     else if (message[3]==41)// T overheat
                     {
                         _value = Convert.ToString(message[4]-40);
